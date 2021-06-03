@@ -126,8 +126,19 @@ tarefa verde{
 		parar()
 		esperar(100)
 		se(cor(3)=="VERDE" ou cor(4)=="VERDE")entao{
-			rotacionar(1000, 90)
-			enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{direita(1000)}
+            enquanto(cor(3)=="VERDE" ou cor(4)=="VERDE")farei{esquerda(1000)}
+            parar()
+            se(cor(3)=="PRETO" ou cor(4)=="PRETO")entao{
+                frente(300)
+			    esperar(300)
+			    direita(1000)
+			    esperar(600)
+			    enquanto(cor(3)=="BRANCO")farei{direita(1000)}
+			    parar()
+            } senao {
+			    rotacionar(1000, 90)
+			    enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{direita(1000)}
+            }
 		} senao {
 			frente(300)
 			esperar(300)
@@ -147,8 +158,19 @@ tarefa verde{
 		parar()
 		esperar(100)
 		se(cor(2)=="VERDE" ou cor(1)=="VERDE")entao{
-			rotacionar(1000, 90)
-			enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{direita(1000)}
+            enquanto(cor(2)=="VERDE" ou cor(1)=="VERDE")farei{direita(500)}
+            parar()
+            se(cor(1)=="PRETO" ou cor(2)=="PRETO")entao{
+                frente(300)
+			    esperar(300)
+			    esquerda(1000)
+			    esperar(600)
+			    enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
+			    parar()
+            } senao {
+			    rotacionar(1000, 90)
+			    enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{direita(1000)}
+            }
 		} senao {
 			frente(300)
 			esperar(300)
@@ -645,7 +667,7 @@ velocidadeatuador(500)
 levantar(900)
 zerartemporizador()
 enquanto(verdadeiro)farei{
-	se(temporizador()>750 e temp!=falso)entao{
+	se(temporizador()>800 e temp==verdadeiro)entao{
 		parar()
 		zerartemporizador()
 		enquanto(cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{
@@ -663,7 +685,7 @@ enquanto(verdadeiro)farei{
 				esperar(1500)
 				se(tempCont == 0)entao{
 					tras(200)
-					esperar(770)
+					esperar(820)
 					tempCont = tempCont + 1
 					parar()
 				}
