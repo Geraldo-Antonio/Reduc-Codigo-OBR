@@ -86,7 +86,11 @@ tarefa curva90 {
 		zerartemporizador()
 		enquanto(cor(3)=="BRANCO" e temporizador()<3000)farei{direita(1000)}
 		parar()
-		se(cor(3)=="BRANCO")entao{enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}}
+		se(cor(3)=="BRANCO")entao{
+            tras(200)
+            esperar(100)
+            enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
+        }
 		zerartemporizador()
 	} senao se(cor(4)=="PRETO")entao{
 		zerartemporizador()
@@ -100,7 +104,11 @@ tarefa curva90 {
 		zerartemporizador()
 		enquanto(cor(2)=="BRANCO" e temporizador()<3000)farei{esquerda(1000)}
 		parar()
-		se(cor(2)=="BRANCO")entao{enquanto(cor(3)=="BRANCO")farei{direita(1000)}}
+		se(cor(2)=="BRANCO")entao{
+            tras(200)
+            esperar(100)
+            enquanto(cor(3)=="BRANCO")farei{direita(1000)}
+        }
 		parar()
 		zerartemporizador()
 	} senao {
@@ -383,8 +391,10 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<360)entao{
 			direc = arredondar(direcao())
             zerartemporizador()
 
-			se(ULTRA2>500 ou ULTRA2<20)entao{
-				ULTRA2=200
+			se(ULTRA2>500)entao{
+				enquanto(ultra(2)>500)farei{frente(150)}
+                parar()
+                pegar = falso
 			}
             se(ULTRA2<150)entao{
                 pegar = verdadeiro
