@@ -21,7 +21,7 @@ numero tempCont = 0
 booleano resgateF = falso
 booleano pegar = falso
 numero resgate90 = 0
-
+numero saida = 0
 tarefa seguelinha{
 	se(luz(2)>20)entao{
 		se(luz(3)>20)entao{
@@ -74,7 +74,7 @@ tarefa seguelinha{
 	}
 }
 tarefa curva90 {
-	se(cor(1)=="PRETO")entao{
+	se(luz(1)<35)entao{
 		zerartemporizador()
 		tempCont = 0
 		parar()
@@ -92,7 +92,7 @@ tarefa curva90 {
             enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
         }
 		zerartemporizador()
-	} senao se(cor(4)=="PRETO")entao{
+	} senao se(luz(4)<35)entao{
 		zerartemporizador()
 		tempCont = 0
 		parar()
@@ -341,6 +341,11 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<360)entao{
 			esperar(300)
 			tras(300)
 			esperar(300)
+			parar()
+			se(toque(1)==falso)entao{
+				se(triangulo==1)entao{saida=1}
+				senao se(triangulo==2)entao{saida=2}
+			}
 			velocidadeatuador(150)
 			abrir(1)
 			baixar(600)
@@ -417,10 +422,11 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<360)entao{
 				enquanto(ultra(2)>500)farei{frente(150)}
                 parar()
                 pegar = falso
+				ULTRA2 = ultra(2)
 			}
             se(ULTRA2<150)entao{
                 pegar = verdadeiro
-            }
+            } senao{pegar = falso}
 
 			se(resgatepos!=0)entao{
 				procurandoSegundo()
@@ -451,7 +457,9 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<360)entao{
 
 			}
             se(resgatepos != 0)entao{pegar = falso}
+			se(ULTRA2>150)entao{pegar = falso}
 			se(ultra(2)<ULTRA2 - 5 ou pegar==verdadeiro)entao{
+				pegar = falso
 				parar()
 				acenderled("VERDE")
 				frente(200)
@@ -507,7 +515,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<360)entao{
 						se(resgatepos==0)entao{
 							rotacionar(1000, 90)
 						}
-						enquanto(ultra(1)>27 e cor(5)=="BRANCO")farei{frente(300)}
+						enquanto(ultra(1)>27)farei{frente(300)}
 						parar()
 						rotacionar(1000, 90)
 						enquanto(luz(5)>12)farei{
