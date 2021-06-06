@@ -499,7 +499,10 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<360)entao{
 					se(temvitima()==falso)entao{
 						parar()
 						se(resgatepos==0)entao{
-							trasrotacao(1000, 80)
+							enquanto(toque(1)==falso)farei{tras(300)}
+							parar()
+							frente(300)
+							esperar(300)
 						}senao se(resgatepos==2)entao{
 							rotacionar(1000, negativo(90))
 							enquanto(cor(2)=="VERDE")farei{frente(300)}
