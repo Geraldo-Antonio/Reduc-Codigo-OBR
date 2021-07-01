@@ -1,3 +1,51 @@
+enquanto(verdadeiro)farei{
+			triangulo = triangulo + 1
+            se(ultra(3)>900 e triangulo==1)entao{
+                saida = 3
+            }senao se(triangulo == 1 e ultra(1)>1000)entao{
+                saida = 1
+            } senao se(triangulo==2 e ultra(1)>1000){
+                saida = 2
+            } senao se(triangulo == 2)entao{
+                tras(300)
+                esperar(300)
+                se(toque(1!=falso))entao{
+                    saida = 1
+                }
+            } senao se (triangulo==3 e ultra(3)>900) entao{
+                saida = 2
+            } senao se (triangulo==3 e ultra(1)>900) entao{
+                saida = 3
+            }
+			frente(300)
+			esperar(300)
+			tras(300)
+			esperar(300)
+			parar()
+			se(toque(1)==falso)entao{
+				se(triangulo==1)entao{saida=1}
+				senao se(triangulo==2)entao{saida=2}
+			}
+			velocidadeatuador(150)
+			abrir(1)
+			baixar(600)
+			enquanto(ultra(1)>120)farei{frente(300)}
+			parar()
+			levantar(600)
+			fechar(1)
+			velocidadeatuador(50)
+			enquanto(luz(5)>12 e ultra(1)>15)farei{frente(300)}
+			parar()
+			se(cor(5)=="PRETO")entao{
+				interromper()
+			}
+			rotacionar(1000, 90)
+
+}
+
+
+///BACKUP DO CÒDIGO SO PARA GARANTIR.
+
 numero travou = 0
 numero sensor = 0
 numero seguidor = 1
@@ -22,30 +70,6 @@ booleano resgateF = falso
 booleano pegar = falso
 numero resgate90 = 0
 numero saida = 0
-tarefa alinhar {
-    escrevernumero(2, direcao())
-	se(direcao()>230 e direcao()<300)entao{
-	    escrever(1, "270")
-	    rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
-		parar()
-	} senao se(direcao()>300 ou direcao()<40)entao{
-		escrever(1, "0")
-		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
-		parar()
-	} senao se(direcao()>40 e direcao()<130)entao{
-		escrever(1, "90")
-		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
-		parar()
-	} senao se(direcao()>130 e direcao()<230)entao{
-		escrever(1, "180")
-		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
-		parar()
-	}
-}
 tarefa seguelinha{
 	se(luz(2)>20)entao{
 		se(luz(3)>20)entao{
@@ -316,7 +340,6 @@ tarefa procurandoSegundo{
 			enquanto((ultra(2)>ULTRA2 - 10 e ultra(3)>ULTRA3 - 5) e (ultra(1)>20 e temporizador()<1000))farei{
 				frente(300)
 			}
-            parar()
 }
 tarefa resgate{
 se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
@@ -387,9 +410,9 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 			}
             se(ultra(3)>900 e triangulo==1)entao{
                 saida = 3
-            }senao se(triangulo == 1 e ultra(1)>900)entao{
+            }senao se(triangulo == 1 e ultra(1)>1000)entao{
                 saida = 1
-            } senao se(triangulo==2 e ultra(1)>900)entao{
+            } senao se(triangulo==2 e ultra(1)>1000)entao{
                 saida = 2
             } senao se(triangulo == 2)entao{
                 tras(300)
@@ -431,7 +454,28 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 		ULTRA3 = ultra(3)
 		resgatepos = 0
 		enquanto(verdadeiro)farei{
-			alinhar()
+			escrevernumero(2, direcao())
+			se(direcao()>230 e direcao()<300)entao{
+				escrever(1, "270")
+				rotacionar(1000, 5)
+				enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+				parar()
+			} senao se(direcao()>300 ou direcao()<40)entao{
+				escrever(1, "0")
+				rotacionar(1000, 5)
+				enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
+				parar()
+			} senao se(direcao()>40 e direcao()<130)entao{
+				escrever(1, "90")
+				rotacionar(1000, 5)
+				enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
+				parar()
+			} senao se(direcao()>130 e direcao()<230)entao{
+				escrever(1, "180")
+				rotacionar(1000, 5)
+				enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
+				parar()
+			}
 			escrevernumero(1, ultra(2))
 			escrevernumero(2, ULTRA2)
 			escrevernumero(3, resgatepos)
@@ -449,7 +493,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
             se(ULTRA2<150)entao{
                 pegar = verdadeiro
             } senao{pegar = falso}
-            se(ULTRA2<100 e resgatepos==0)entao{ULTRA2 = 160}
+
 			se(resgatepos!=0)entao{
 				procurandoSegundo()
 				se(temporizador()>=1000)entao{
@@ -459,16 +503,12 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				}
                 zerartemporizador()
 			} senao {procurando()}
+
 			parar()
-            # Desativa o pegar como verdadeiro para evitar problemas com o triangulo
-            se(resgatepos != 0)entao{pegar = falso}
-            se(resgatepos == 1)entao{pegar = falso}
-            escreverbooleano(3, pegar)
 			se(ultra(1)<30)entao{
 				parar()
 				resgatepos = resgatepos + 1
 				se(resgatepos==1)entao{
-                    se(ultra(3)>900)entao{saida=3}
 					trasrotacao(300,40)
 					rotacionar(1000, 90)
 				} senao{
@@ -482,27 +522,8 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				ULTRA2 = ultra(2)
 
 			}
-            se(resgatepos==2)entao{
-                # ir para a saida
-                parar()
-                acenderled("AZUL")
-                limparconsole()
-                escrevernumero(1, saida)
-                se(saida==3)entao{
-                    frenterotacao(300, 5)
-                    rotacionar(1000, 90)
-                    enquanto(ultra(1)>25)farei{frente(300)}
-                    parar()
-                    rotacionar(1000, negativo(90))
-                    alinhar()
-                    enquanto(ultra(2)<500 e ultra(3)<500)farei{frente(300)}
-                    parar()
-                    trasrotacao(300, 5)
-                    enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
-                    parar()
-                    interromper()
-                }
-            }
+            se(resgatepos != 0)entao{pegar = falso}
+			se(ULTRA2>150)entao{pegar = falso}
 			se(ultra(2)<ULTRA2 - 5 ou pegar==verdadeiro)entao{
 				pegar = falso
 				parar()
@@ -604,7 +625,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				esperar(150)
 				parar()
 				rotacionar(1000, negativo(90))
-				trasrotacao(300, 10)
+				trasrotacao(300, 8)
                 velocidadeatuador(150)
                 abrir(1)
                 baixar(1000)
