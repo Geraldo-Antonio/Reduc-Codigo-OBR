@@ -361,17 +361,17 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 		}
 		comentar("Procurando pelo triangulo")
 		enquanto(verdadeiro)farei{
-			triangulo = triangulo + 1
-            escrevernumero(1, saida)
-			frente(300)
-			esperar(300)
-			tras(300)
-			esperar(300)
 			parar()
-			se(toque(1)==falso)entao{
-				se(triangulo==1)entao{saida=1}
-				senao se(triangulo==2)entao{saida=2}
-			}
+			rotacionar(1000, 5)
+			alinhar()
+			triangulo = triangulo + 1
+			escrevernumero(1, triangulo)
+            escrevernumero(2, saida)
+			frente(300)
+			esperar(600)
+			tras(300)
+			esperar(600)
+			parar()
 			velocidadeatuador(150)
 			abrir(1)
 			baixar(600)
@@ -382,12 +382,15 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 			velocidadeatuador(50)
 			enquanto(luz(5)>12 e ultra(1)>15)farei{frente(300)}
 			parar()
+			escrever(3, "verificar o triangulo agora")
 			se(cor(5)=="PRETO")entao{
 				interromper()
 			}
             se(ultra(3)>900 e triangulo==1)entao{
                 saida = 3
-            }senao se(triangulo == 1 e ultra(1)>900)entao{
+            }senao se(triangulo==2 e ultra(3)>900)entao{
+				saida=2
+			}senao se(triangulo == 1 e ultra(1)>900)entao{
                 saida = 1
             } senao se(triangulo==2 e ultra(1)>900)entao{
                 saida = 2
@@ -402,6 +405,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
             } senao se (triangulo==3 e ultra(1)>900) entao{
                 saida = 3
             }
+			escrevernumero(2, saida)
 			rotacionar(1000, 90)
 
 		}
@@ -471,6 +475,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
                     se(ultra(3)>900)entao{saida=3}
 					trasrotacao(300,40)
 					rotacionar(1000, 90)
+					alinhar()
 				} senao{
 					trasrotacao(300, 5)
 					rotacionar(1000, 180)
@@ -482,26 +487,53 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				ULTRA2 = ultra(2)
 
 			}
+			escrevernumero(1, resgatepos)
+			#esperar(10000)
             se(resgatepos==2)entao{
                 # ir para a saida
-                parar()
-                acenderled("AZUL")
-                limparconsole()
-                escrevernumero(1, saida)
-                se(saida==3)entao{
-                    frenterotacao(300, 5)
-                    rotacionar(1000, 90)
-                    enquanto(ultra(1)>25)farei{frente(300)}
-                    parar()
-                    rotacionar(1000, negativo(90))
-                    alinhar()
-                    enquanto(ultra(2)<500 e ultra(3)<500)farei{frente(300)}
-                    parar()
-                    trasrotacao(300, 5)
-                    enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
-                    parar()
-                    interromper()
-                }
+				parar()
+				acenderled("AZUL")
+				limparconsole()
+				se(triangulo==1)entao{
+					escrevernumero(1, triangulo)
+					escrevernumero(2, saida)
+					se(saida==3)entao{
+						frenterotacao(300, 5)
+						rotacionar(1000, 90)
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 e ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 5)
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						interromper()
+					}
+				} senao se(triangulo==3)entao{
+					escrevernumero(1, triangulo)
+					escrevernumero(2, saida)
+					parar()
+					se(saida==2)entao{
+						rotacionar(1000, negativo(90))
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, 90)
+						alinhar()
+						enquanto(ultra(2)<500 e ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 5)
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						interromper()
+					} senao se(saida==3)entao{
+						limparconsole()
+						escrever(1, "SAIDA ACHADA NO 3")
+						parar()
+						esperar(50000)
+					}
+				}
             }
 			se(ultra(2)<ULTRA2 - 5 ou pegar==verdadeiro)entao{
 				pegar = falso
