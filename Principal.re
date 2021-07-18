@@ -319,8 +319,9 @@ tarefa procurandoSegundo{
             parar()
 }
 tarefa resgate{
-se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
-      enquanto(ultra(2)<50 e ultra(3)<50)farei{seguelinha()}
+se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350 e inclinacao()>0))entao{
+      acenderled("VERMELHO")
+	  enquanto(ultra(2)<50 e ultra(3)<50)farei{seguelinha()}
 		parar()
 		velocidadeatuador(150)
 		temp = falso
@@ -334,31 +335,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 		tras(300)
 		esperar(400)
 		parar()
-		se(direcao()>230 e direcao()<300)entao{
-			resgate90 = 270
-			escrever(1, "270")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
-			parar()
-		} senao se(direcao()>300 ou direcao()<40)entao{
-			resgate90 = 0
-			escrever(1, "0")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
-			parar()
-		} senao se(direcao()>40 e direcao()<130)entao{
-			resgate90 = 90
-			escrever(1, "90")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
-			parar()
-		} senao se(direcao()>130 e direcao()<230)entao{
-			resgate90 = 180
-			escrever(1, "180")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
-			parar()
-		}
+		alinhar()
 		comentar("Procurando pelo triangulo")
 		se(ultra(2)>500)entao{saida=3}
 		enquanto(verdadeiro)farei{
