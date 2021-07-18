@@ -360,6 +360,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 			parar()
 		}
 		comentar("Procurando pelo triangulo")
+		se(ultra(2)>500)entao{saida=3}
 		enquanto(verdadeiro)farei{
 			parar()
 			rotacionar(1000, 5)
@@ -461,6 +462,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 					rotacionar(1000, 90)
 					alinhar()
 				} senao{
+					se(resgatepos==2 e ultra(3)>500)entao{saida=3}
 					trasrotacao(300, 5)
 					rotacionar(1000, 180)
 				}
@@ -494,6 +496,19 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						interromper()
+					} senao se(saida == 3)entao{
+						frenterotacao(300, 10)
+						rotacionar(1000, 180)
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 8)
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						interromper()
 					}
 				}senao se(triangulo==2)entao{
 					escrevernumero(1, triangulo)
@@ -513,6 +528,20 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						interromper()
+					} senao se(saida==3)entao{
+						frenterotacao(300, 50)
+						alinhar()
+						rotacionar(1000, 90)
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 8)
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						interromper()
 					}
 				} senao se(triangulo==3)entao{
 					escrevernumero(1, triangulo)
@@ -527,9 +556,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 						alinhar()
 						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
 						parar()
-						enquanto(cor(1)!="VERDE" e cor(2)!="VERDE")farei{tras(100)}
-						parar()
-						frenterotacao(1000, 4)
+						trasrotacao(300, 8)
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						interromper()
@@ -541,9 +568,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 						alinhar()
 						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
 						parar()
-						enquanto(cor(1)!="VERDE" e cor(2)!="VERDE")farei{tras(100)}
-						parar()
-						frenterotacao(1000, 4)
+						trasrotacao(300, 8)
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						interromper()
@@ -614,6 +639,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 					} senao{
 						se(resgatepos==0)entao{
 							rotacionar(1000, 90)
+							alinhar()
 						}
 						enquanto(ultra(1)>27)farei{frente(300)}
 						parar()
