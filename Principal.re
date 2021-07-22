@@ -47,15 +47,15 @@ tarefa alinhar {
 	}
 }
 tarefa seguelinha{
-	se(luz(2)>20)entao{
-		se(luz(3)>20)entao{
+	se(luz(2)>25)entao{
+		se(luz(3)>25)entao{
 			frente(200)			
 		} senao {
 			zerartemporizador()
 			esquerda(1000)
 		}
 	} senao{
-		se(luz(3)>20)entao{
+		se(luz(3)>25)entao{
 			zerartemporizador()
 			direita(1000)
 		} senao {
@@ -98,7 +98,7 @@ tarefa seguelinha{
 	}
 }
 tarefa curva90 {
-	se(luz(1)<35)entao{
+	se(luz(1)<35 ou cor(1)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
 		parar()
@@ -116,7 +116,7 @@ tarefa curva90 {
             enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
         }
 		zerartemporizador()
-	} senao se(luz(4)<35)entao{
+	} senao se(luz(4)<35 ou cor(4)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
 		parar()
@@ -221,15 +221,16 @@ se (ultra(1) < 15) entao{
 			enquanto(ultra(1)<50)farei{direita(1000)}
 			parar()
 			rotacionar(1000, 20)
+
 			frente(300)
 			esperar(600)
 			zerartemporizador()
-			enquanto(cor(2)=="BRANCO" e (ultra(3)<50) e ultra(1)>15 e ultra(2)>25)farei{frente(100)}
+			enquanto(cor(2)=="BRANCO" e (ultra(3)<50) e ultra(1)>20 e ultra(2)>25)farei{frente(100)}
 			parar()
 			se(cor(2)!="PRETO" e cor(3)!="PRETO")entao{
 				rotacionar(1000, negativo(45))
 				frente(300)
-				esperar(300)
+				esperar(600)
 				enquanto(ultra(3)<50)farei{frente(300)}
 				parar()
 				rotacionar(1000, negativo(55))
