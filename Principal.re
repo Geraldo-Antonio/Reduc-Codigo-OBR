@@ -49,7 +49,7 @@ tarefa alinhar {
 tarefa seguelinha{
 	se(luz(2)>30)entao{
 		se(luz(3)>30)entao{
-			frente(190)			
+			frente(160)			
 		} senao {
 			zerartemporizador()
 			esquerda(1000)
@@ -289,19 +289,16 @@ tarefa procurando{
 			}
 			parar()
 			se(temvitima()==verdadeiro)entao{
-                velocidadeatuador(50)
+                velocidadeatuador(150)
 				frente(300)
 				levantar(1000)
                 parar()
-                levantar(500)
 				fechar(1)
                 rotacionar(1000, 180)
                 enquanto(cor(5)=="BRANCO")farei{frente(300)}
                 parar()
-				velocidadeatuador(120)
 				baixar(650)
 				esperar(500)
-				velocidadeatuador(150)
 				levantar(700)
                 rotacionar(1000, 180)
 			} senao {
@@ -383,7 +380,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 			#levantar(1000)
 			#girarcima(1000)
 			#velocidadeatuador(50)
-			velocidadeatuador(120)
+			velocidadeatuador(150)
 			baixar(650)
 			esperar(500)
 			velocidadeatuador(150)
@@ -621,7 +618,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 							rotacionar(1000, 180)
 							enquanto(cor(5)=="BRANCO")farei{frente(300)}
 							parar()
-							velocidadeatuador(120)
+							velocidadeatuador(150)
 							baixar(650)
 							esperar(500)
 							velocidadeatuador(150)
@@ -699,7 +696,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						enquanto(ultra(1)>27 e luz(5)>7)farei{frente(300)}
 						parar()
 						se(cor(5)=="PRETO")entao{
-							velocidadeatuador(120)
+							velocidadeatuador(150)
 							baixar(650)
 							esperar(500)
 							velocidadeatuador(150)
@@ -722,7 +719,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 							#levantar(1000)
 							#girarcima(1000)
 							#velocidadeatuador(50)
-							velocidadeatuador(120)
+							velocidadeatuador(150)
 							baixar(650)
 							esperar(500)
 							velocidadeatuador(150)
@@ -825,7 +822,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						interromper()
 					} senao {
 						se(cor(5)=="PRETO")entao{
-							velocidadeatuador(120)
+							velocidadeatuador(150)
 							baixar(650)
 							esperar(500)
 							velocidadeatuador(150)
