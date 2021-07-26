@@ -491,6 +491,8 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						parar()
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
+						frente(300)
+						esperar(1000)
 						interromper()
 					} senao se(saida == 3)entao{
 						frenterotacao(300, 10)
@@ -506,6 +508,8 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						parar()
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
+						frente(300)
+						esperar(1000)
 						interromper()
 					}
 				}senao se(triangulo==2)entao{
@@ -520,13 +524,13 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						alinhar()
 						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
 						parar()
-						enquanto(cor(1)!="VERDE" e cor(2)!="VERDE")farei{tras(100)}
-						parar()
-						frenterotacao(1000, 4)
+						trasrotacao(300, 9)
 						enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(4)=="BRANCO")farei{esquerda(1000)}
 						parar()
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
+						frente(300)
+						esperar(1000)
 						interromper()
 					} senao se(saida==3)entao{
 						frenterotacao(300, 50)
@@ -543,6 +547,8 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						parar()
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
+						frente(300)
+						esperar(1000)
 						interromper()
 					}
 				} senao se(triangulo==3)entao{
@@ -563,6 +569,8 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						parar()
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
+						frente(300)
+						esperar(1000)
 						interromper()
 					}senao se(saida==2)entao{
 						rotacionar(1000, negativo(90))
@@ -577,6 +585,8 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350
 						parar()
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
+						frente(300)
+						esperar(1000)
 						interromper()
 					} senao se(saida==3)entao{
 						limparconsole()
