@@ -49,7 +49,7 @@ tarefa alinhar {
 tarefa seguelinha{
 	se(luz(2)>30)entao{
 		se(luz(3)>30)entao{
-			frente(160)			
+			frente(200)			
 		} senao {
 			zerartemporizador()
 			esquerda(1000)
@@ -96,6 +96,7 @@ tarefa seguelinha{
 			}
 		}
 	}
+	zerartemporizador()
 }
 tarefa curva90 {
 	se(luz(1)<35 ou cor(1)=="PRETO")entao{
@@ -315,9 +316,11 @@ tarefa procurandoSegundo{
             parar()
 }
 tarefa resgate{
-se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<350 e inclinacao()>0))entao{
-      acenderled("VERMELHO")
-	  enquanto(ultra(2)<50 e ultra(3)<50)farei{seguelinha()}
+se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345 e inclinacao()>0))entao{
+	  	enquanto(ultra(2)<50 e ultra(3)<50)farei{
+			  seguelinha()
+			  acenderled("VERMELHO")
+		}
 		parar()
 		velocidadeatuador(150)
 		temp = falso

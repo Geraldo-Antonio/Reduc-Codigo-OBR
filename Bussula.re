@@ -24,26 +24,63 @@ numero resgate90 = 0
 numero saida = 0
 tarefa alinhar {
     escrevernumero(2, direcao())
+    escrevernumero(3, ULTIMO)
 	se(direcao()>230 e direcao()<300)entao{
 	    escrever(1, "270")
-	    rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
-		parar()
+        se(ULTIMO == 0)entao{
+            rotacionar(1000, 5)
+        }senao se(ULTIMO == 1) entao {
+            rotacionar(1000, negativo(5))
+        }
+        se(ULTIMO == 1)entao{
+            enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+		    parar()
+        }senao se(ULTIMO == 0) entao {
+            enquanto(arredondar(direcao())!=270)farei{direita(1000)}
+		    parar()
+        }
 	} senao se(direcao()>300 ou direcao()<40)entao{
 		escrever(1, "0")
-		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
-		parar()
+		se(ULTIMO == 0)entao{
+            rotacionar(1000, 5)
+        }senao se(ULTIMO == 1) entao {
+            rotacionar(1000, negativo(5))
+        }
+        se(ULTIMO == 1)entao{
+            enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+		    parar()
+        }senao se(ULTIMO == 0) entao {
+            enquanto(arredondar(direcao())!=270)farei{direita(1000)}
+		    parar()
+        }
 	} senao se(direcao()>40 e direcao()<130)entao{
 		escrever(1, "90")
-		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
-		parar()
+		se(ULTIMO == 0)entao{
+            rotacionar(1000, 5)
+        }senao se(ULTIMO == 1) entao {
+            rotacionar(1000, negativo(5))
+        }
+        se(ULTIMO == 1)entao{
+            enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+		    parar()
+        }senao se(ULTIMO == 0) entao {
+            enquanto(arredondar(direcao())!=270)farei{direita(1000)}
+		    parar()
+        }
 	} senao se(direcao()>130 e direcao()<230)entao{
 		escrever(1, "180")
-		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
-		parar()
+		se(ULTIMO == 0)entao{
+            rotacionar(1000, 5)
+        }senao se(ULTIMO == 1) entao {
+            rotacionar(1000, negativo(5))
+        }
+        se(ULTIMO == 1)entao{
+            enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+		    parar()
+        }senao se(ULTIMO == 0) entao {
+            enquanto(arredondar(direcao())!=270)farei{direita(1000)}
+		    parar()
+        }
 	}
 }
 tarefa seguelinha{
@@ -103,7 +140,7 @@ tarefa curva90 {
 		tempCont = 0
 		parar()
 		frente(300)
-		esperar(300)
+		esperar(350)
 		se(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")entao{
 			enquanto(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")farei{frente(100)}
 		}
@@ -115,14 +152,17 @@ tarefa curva90 {
             esperar(100)
             enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
         }
+        ULTIMO = 0
 		alinhar()
+        tras(300)
+        esperar(200)
 		zerartemporizador()
 	} senao se(luz(4)<35 ou cor(4)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
 		parar()
 		frente(300)
-		esperar(300)
+		esperar(350)
 		se(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")entao{
 			enquanto(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")farei{frente(100)}
 		}
@@ -135,7 +175,10 @@ tarefa curva90 {
             enquanto(cor(3)=="BRANCO")farei{direita(1000)}
         }
 		parar()
+        ULTIMO = 1
 		alinhar()
+        tras(300)
+        esperar(200)
 		zerartemporizador()
 	} senao {
 		seguelinha()
