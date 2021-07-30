@@ -103,7 +103,7 @@ tarefa curva90 {
 		tempCont = 0
 		parar()
 		frente(300)
-		esperar(150)
+		esperar(300)
 		se(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")entao{
 			enquanto(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")farei{frente(100)}
 		}
@@ -115,13 +115,14 @@ tarefa curva90 {
             esperar(100)
             enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
         }
+		alinhar()
 		zerartemporizador()
 	} senao se(luz(4)<35 ou cor(4)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
 		parar()
 		frente(300)
-		esperar(150)
+		esperar(300)
 		se(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")entao{
 			enquanto(cor(1)=="VERDE" ou cor(4)=="VERDE" ou cor(2)=="VERDE" ou cor(3)=="VERDE")farei{frente(100)}
 		}
@@ -134,6 +135,7 @@ tarefa curva90 {
             enquanto(cor(3)=="BRANCO")farei{direita(1000)}
         }
 		parar()
+		alinhar()
 		zerartemporizador()
 	} senao {
 		seguelinha()
