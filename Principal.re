@@ -20,7 +20,7 @@ numero PERDEU = 0
 numero tempCont = 0
 booleano resgateF = falso
 booleano pegar = falso
-numero resgate90 = 0
+numero contVermelho = 0
 numero saida = 0
 tarefa alinhar {
     escrevernumero(2, direcao())
@@ -101,6 +101,7 @@ tarefa curva90 {
 	se(luz(1)<35 ou cor(1)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
+		contVermelho = 0
 		parar()
 		frente(300)
 		esperar(150)
@@ -119,6 +120,7 @@ tarefa curva90 {
 	} senao se(luz(4)<35 ou cor(4)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
+		contVermelho = 0
 		parar()
 		frente(300)
 		esperar(150)
@@ -160,8 +162,8 @@ tarefa verde{
 			    enquanto(cor(3)=="BRANCO")farei{direita(1000)}
 			    parar()
             } senao {
-			    rotacionar(1000, 90)
-			    enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{direita(1000)}
+			    rotacionar(1000, negativo(90))
+			    enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{esquerda(1000)}
             }
 		} senao {
 			frente(300)
@@ -315,6 +317,7 @@ tarefa procurando{
 				esperar(500)
 				levantar(700)
                 rotacionar(1000, 180)
+				alinhar()
 			} senao {
 				fechar(1)
 				levantar(500)
@@ -341,7 +344,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 		preto = 0
 		frente(300)
 		esperar(600)
-		se(ultra(3)<35)entao{
+		se(ultra(3)<50)entao{
 		frente(300)
 		esperar(400)
 		tras(300)
@@ -621,7 +624,8 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 				esperar(200)
 				parar()
 				rotacionar(1000, 90)
-				trasrotacao(300, 8)
+				tras(300)
+				esperar(310)
 				parar()
 				velocidadeatuador(150)
                 abrir(1)
@@ -634,15 +638,16 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						levantar(500)
 						fechar(1)
 						trasrotacao(1000, 100)
+						se(temvitima()==falso)entao{rotacionar(1000, negativo(90))}
 					} senao {
 						levantar(500)
 						fechar(1)
 						trasrotacao(1000, 50)
 					}
-					rotacionar(1000, negativo(90))
+					
 					se(temvitima() == verdadeiro)entao{
 						se(resgatepos==0)entao{
-							rotacionar(1000, 180)
+							rotacionar(1000, 90)
 							enquanto(cor(5)=="BRANCO" e ultra(1)>27)farei{frente(300)}
 							parar()
 							se(cor(5)=="PRETO")entao{
@@ -652,6 +657,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 								velocidadeatuador(150)
 								levantar(700)
 								rotacionar(1000, 180)
+								alinhar()
 								resgatepos = 0
 							} senao {
 								rotacionar(1000, 90)
@@ -709,6 +715,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 							resgatepos = 0
 						}
 					}
+					#rotacionar(1000, negativo(90))
 				} senao {
 					se(pegar==falso e 1==2)entao{
 						enquanto(toque(1)==falso)farei{tras(300)}
@@ -758,6 +765,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 							velocidadeatuador(150)
 							levantar(700)
 							rotacionar(1000, 180)
+							alinhar()
 						} senao {
 							rotacionar(1000, 90)
 							enquanto(luz(5)>12)farei{
@@ -776,10 +784,12 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 							#girarcima(1000)
 							#velocidadeatuador(50)
 							velocidadeatuador(150)
+							girarbaixo(500)
 							baixar(650)
 							esperar(500)
 							velocidadeatuador(150)
 							levantar(700)
+							girarcima(500)
 							acenderled("VERMELHO")
 							rotacionar(1000, 40)
 							se(ultra(1)>40)entao{
@@ -956,16 +966,24 @@ velocidadeatuador(500)
 levantar(900)
 zerartemporizador()
 enquanto(verdadeiro)farei{
-	se(cor(1)=="VERMELHO" ou cor(2)=="VERMELHO")entao{
-		parar()
-		esquerda(1000)
-		esperar(800)
-		zerartemporizador()
-	} senao se(cor(3)=="VERMELHO" ou cor(4)=="VERMELHO")entao{
-		parar()
-		direita(1000)
-		esperar(800)
-		zerartemporizador()
+	se(cor(1)=="VERMELHO" ou cor(2)=="VERMELHO" ou cor(3)=="VERMELHO" ou cor(4)=="VERMELHO")entao{
+		acenderled("VERMELHO")
+		se(contVermelho>1)entao{
+			se(cor(1)=="VERMELHO" ou cor(2)=="VERMELHO")entao{
+				esquerda(300)
+				esperar(500)
+			} senao se(cor(3)=="VERMELHO" ou cor(4)=="VERMELHO")entao{
+				direita(300)
+				esperar(500)
+			}
+			contVermelho = 0
+		} senao {
+			enquanto(cor(2)!="PRETO" e cor(3)!="PRETO")farei{
+				tras(200)
+			}
+			contVermelho = contVermelho + 1
+		}
+		apagarled()
 	}senao {
 		seperdeu()
 	}
