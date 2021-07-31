@@ -49,7 +49,7 @@ tarefa alinhar {
 tarefa seguelinha{
 	se(luz(2)>30)entao{
 		se(luz(3)>30)entao{
-			frente(200)			
+			frente(170)			
 		} senao {
 			zerartemporizador()
 			esquerda(1000)
@@ -96,7 +96,6 @@ tarefa seguelinha{
 			}
 		}
 	}
-	zerartemporizador()
 }
 tarefa curva90 {
 	se(luz(1)<35 ou cor(1)=="PRETO")entao{
@@ -169,8 +168,15 @@ tarefa verde{
 			esperar(300)
 			direita(1000)
 			esperar(600)
-			enquanto(cor(3)=="BRANCO")farei{direita(1000)}
+			zerartemporizador()
+			enquanto(cor(3)=="BRANCO" e temporizador()<2500)farei{direita(1000)}
 			parar()
+			se(cor(3)=="BRANCO")entao{
+				tras(300)
+				esperar(70)
+				enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
+				parar()
+			}
 		}
 		zerartemporizador()
 	} senao se(cor(3)=="VERDE" ou cor(4)=="VERDE")entao{
@@ -201,8 +207,15 @@ tarefa verde{
 			esperar(300)
 			esquerda(1000)
 			esperar(600)
-			enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
+			zerartemporizador()
+			enquanto(cor(2)=="BRANCO" e temporizador()<2500)farei{esquerda(1000)}
 			parar()
+			se(cor(2)=="BRANCO")entao{
+				tras(300)
+				esperar(70)
+				enquanto(cor(3)=="BRANCO")farei{direita(1000)}
+				parar()
+			}
 		}
 		zerartemporizador()
 	} senao {
@@ -455,6 +468,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 					}
 					enquanto(ultra(1)>30)farei{frente(300)}
 					parar()
+					pegar = falso
 					trasrotacao(300,40)
 					rotacionar(1000, 90)
 					alinhar()
@@ -626,17 +640,46 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						trasrotacao(1000, 50)
 					}
 					rotacionar(1000, negativo(90))
-					se(temvitima()!=falso)entao{
+					se(temvitima() == verdadeiro)entao{
 						se(resgatepos==0)entao{
 							rotacionar(1000, 180)
-							enquanto(cor(5)=="BRANCO")farei{frente(300)}
+							enquanto(cor(5)=="BRANCO" e ultra(1)>27)farei{frente(300)}
 							parar()
-							velocidadeatuador(150)
-							baixar(650)
-							esperar(500)
-							velocidadeatuador(150)
-							levantar(700)
-							rotacionar(1000, 180)
+							se(cor(5)=="PRETO")entao{
+								velocidadeatuador(150)
+								baixar(650)
+								esperar(500)
+								velocidadeatuador(150)
+								levantar(700)
+								rotacionar(1000, 180)
+								resgatepos = 0
+							} senao {
+								rotacionar(1000, 90)
+								enquanto(luz(5)>12)farei{
+									se(ultra(1)<40)entao{
+										rotacionar(500, negativo(25))
+									} senao {frente(300)}
+								}
+								parar()
+								
+								velocidadeatuador(150)
+								baixar(650)
+								esperar(500)
+								velocidadeatuador(150)
+								levantar(700)
+								acenderled("VERMELHO")
+								rotacionar(1000, 40)
+								se(ultra(1)>40)entao{
+									enquanto(ultra(1)>50)farei{frente(300)}
+								} senao {
+									enquanto(ultra(1)<50)farei{tras(300)}
+								}
+								parar()
+								rotacionar(1000, 45)
+								apagarled()
+								resgatepos = 0
+
+							}
 						} senao {
 							rotacionar(1000, 90)
 							enquanto(ultra(1)>27)farei{frente(300)}
