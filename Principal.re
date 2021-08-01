@@ -102,6 +102,7 @@ tarefa curva90 {
 		zerartemporizador()
 		tempCont = 0
 		contVermelho = 0
+		ULTIMO = 1
 		parar()
 		frente(300)
 		esperar(150)
@@ -121,6 +122,7 @@ tarefa curva90 {
 		zerartemporizador()
 		tempCont = 0
 		contVermelho = 0
+		ULTIMO = 2
 		parar()
 		frente(300)
 		esperar(150)
@@ -290,6 +292,7 @@ se (ultra(1) < 15) entao{
  	}
 }
 tarefa procurando{
+			luz5 = luz(5)
 			frente(300)
 			esperar(100)
 			parar()
@@ -304,6 +307,16 @@ tarefa procurando{
 				frente(300)	
 			}
 			parar()
+			#se(luz(5)!=luz5)entao{
+				#tras(300)
+				#esperar(350)
+				#abrir(1)
+				#baixar(900)
+				#enquanto((ultra(2)>ULTRA2 - 10 e ultra(3)>ULTRA3 - 5) e (ultra(1)>25 e temvitima()==falso))farei{
+					#frente(300)	
+				#}
+				#parar()
+			#}
 			se(temvitima()==verdadeiro)entao{
                 velocidadeatuador(150)
 				frente(300)
@@ -687,7 +700,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 
 							}
 						} senao {
-							rotacionar(1000, 90)
+							#rotacionar(1000, 90)
 							enquanto(ultra(1)>27)farei{frente(300)}
 							parar()
 							rotacionar(1000, 90)
@@ -935,14 +948,26 @@ tarefa seperdeu{
 	se(temporizador()>800 e temp==verdadeiro)entao{
 		parar()
 		zerartemporizador()
-		enquanto(cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{
-			direita(1000)
+		enquanto(cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1200)farei{
+			se(ULTIMO==1)entao{
+				direita(1000)
+			} senao se (ULTIMO==2)entao{
+				esquerda(1000)
+			} senao {
+				direita(1000)
+			}
 		}
 		parar()
 		se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
 			zerartemporizador()
-			enquanto(cor(3)=="BRANCO" e cor(4)=="BRANCO" e temporizador()<3000)farei{
-				esquerda(1000)
+			enquanto(cor(3)=="BRANCO" e cor(4)=="BRANCO" e temporizador()<2400)farei{
+				se(ULTIMO==1)entao{
+					esquerda(1000)
+				} senao se (ULTIMO==2)entao{
+					direita(1000)
+				} senao {
+					esquerda(1000)
+				}
 			}
 			zerartemporizador()
 			se(cor(3)=="BRANCO" e cor(4)=="BRANCO")entao{
