@@ -971,8 +971,16 @@ tarefa seperdeu{
 			}
 			zerartemporizador()
 			se(cor(3)=="BRANCO" e cor(4)=="BRANCO")entao{
-				direita(1000)
-				esperar(1500)
+				se(ULTIMO==1)entao{
+					direita(1000)
+					esperar(1200)
+				} senao se (ULTIMO==2)entao{
+					esquerda(1000)
+					esperar(1200)
+				} senao {
+					direita(1000)
+					esperar(1200)
+				}
 				se(tempCont == 0)entao{
 					tras(200)
 					esperar(820)
@@ -996,10 +1004,10 @@ enquanto(verdadeiro)farei{
 		se(contVermelho>1)entao{
 			se(cor(1)=="VERMELHO" ou cor(2)=="VERMELHO")entao{
 				esquerda(300)
-				esperar(500)
+				esperar(800)
 			} senao se(cor(3)=="VERMELHO" ou cor(4)=="VERMELHO")entao{
 				direita(300)
-				esperar(500)
+				esperar(800)
 			}
 			contVermelho = 0
 		} senao {
