@@ -49,7 +49,7 @@ tarefa alinhar {
 tarefa seguelinha{
 	se(luz(2)>30)entao{
 		se(luz(3)>30)entao{
-			frente(170)			
+			frente(segueF)			
 		} senao {
 			zerartemporizador()
 			esquerda(1000)
@@ -346,11 +346,13 @@ tarefa procurandoSegundo{
 }
 tarefa resgate{
 se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345 e inclinacao()>0))entao{
+		segueF = 300
 	  	enquanto(ultra(2)<50 e ultra(3)<50)farei{
 			  seguelinha()
 			  acenderled("VERMELHO")
 		}
 		parar()
+		segueF = 180
 		velocidadeatuador(150)
 		temp = falso
 		acenderled("VERDE")
@@ -525,8 +527,9 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						frente(300)
-						esperar(1000)
-						interromper()
+						esperar(200)
+						parar()
+						esperar(10000)
 					} senao se(saida == 3)entao{
 						frenterotacao(300, 10)
 						rotacionar(1000, 180)
@@ -542,8 +545,9 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						frente(300)
-						esperar(1000)
-						interromper()
+						esperar(200)
+						parar()
+						esperar(10000)
 					}
 				}senao se(triangulo==2)entao{
 					escrevernumero(1, triangulo)
@@ -563,8 +567,9 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						frente(300)
-						esperar(1000)
-						interromper()
+						esperar(200)
+						parar()
+						esperar(10000)
 					} senao se(saida==3)entao{
 						frenterotacao(300, 50)
 						alinhar()
@@ -581,8 +586,9 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						frente(300)
-						esperar(1000)
-						interromper()
+						esperar(200)
+						parar()
+						esperar(10000)
 					}
 				} senao se(triangulo==3)entao{
 					escrevernumero(1, triangulo)
@@ -603,8 +609,9 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						frente(300)
-						esperar(1000)
-						interromper()
+						esperar(200)
+						parar()
+						esperar(10000)
 					}senao se(saida==2)entao{
 						rotacionar(1000, negativo(90))
 						enquanto(ultra(1)>25)farei{frente(300)}
@@ -619,8 +626,9 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
 						parar()
 						frente(300)
-						esperar(1000)
-						interromper()
+						esperar(200)
+						parar()
+						esperar(10000)
 					} senao se(saida==3)entao{
 						limparconsole()
 						escrever(1, "SAIDA ACHADA NO 3")
@@ -704,7 +712,7 @@ se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345
 							enquanto(ultra(1)>27)farei{frente(300)}
 							parar()
 							rotacionar(1000, 90)
-							enquanto(cor(5)=="BRANCO")farei{frente(300)}
+							enquanto(luz(5)>12)farei{frente(300)}
 							parar()
 							velocidadeatuador(150)
 							girarbaixo(1000)
