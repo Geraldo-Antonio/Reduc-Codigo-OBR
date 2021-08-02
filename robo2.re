@@ -7,6 +7,7 @@ numero ULTIMO = 0
 numero triangulo = 0
 numero recuar = 0
 numero graus = 0
+numero vitimapos = 0
 tarefa alinhar {
     escrevernumero(2, direcao())
 	se(direcao()>230 e direcao()<300)entao{
@@ -276,7 +277,7 @@ tarefa resgate{
         parar()
         acenderled("VERDE")
         velocidade = 200
-        enquanto(inclinacao()!=0)farei{
+        enquanto(inclinacao()!=0 e ultra(2)<40)farei{
             seguelinha()
         }
         alinhar()
@@ -316,67 +317,166 @@ tarefa resgate{
             levantar(600)
         }
         enquanto(verdadeiro)farei{
-            trasrotacao(1000, 30)
-            rotacionar(1000, 90)
-            alinhar()
-            graus = direcao()
-            abrir(1)
-            baixar(600)
             zerartemporizador()
-            enquanto(temporizador()<1300 e temvitima()==falso)farei{frente(300)}
+            # Vai para tras apos achar o trinagulo e procura vitimas
+            enquanto(temporizador()<850 e ultra(2)>230)farei{tras(300)}
             parar()
-            se(temvitima()==verdadeiro)entao{
-                frente(300)
-                levantar(300)
-                levantar(300)
-                fechar(1)
-                rotacionar(1000, 180)
-                alinhar()
-                enquanto(ultra(1)>30)farei{frente(300)}
-                parar()
+            se(ultra(2)<230)entao{
+                escrevernumero(1, ultra(2))
+                vitimapos = ultra(2)
+                trasrotacao(1000, 3)
                 rotacionar(1000, 90)
-                enquanto(luz(3)>8)farei{frente(300)}
-                parar()
-                #abrir(1)
-                baixar(600)
-                esperar(500)
-                #fechar(1)
-                levantar(600)
-                # Resgatar a vitima
-            } senao {
-                fechar(1)
-                levantar(600)
-                enquanto(ultra(2)>100)farei{direita(1000)}
-                parar()
-                se(ultra(2)<100)entao{
-                    acenderled("VERMELHO")
-                    parar()
-                    rotacionar(1000, 95)
+                alinhar()
+                se(vitimapos<30)entao{
+                    frente(100)
+                    esperar(1000)
                     tras(300)
                     esperar(300)
+                }
+                abrir(1)
+                baixar(600)
+                enquanto(temvitima()==falso e ultra(1)>45)farei{frente(300)}
+                parar()
+                se(ultra(1)<45)entao{
+                    levantar(600)
+                    fechar(1)
+                }
+                se(temvitima())entao{
+                    frente(300)
+                    levantar(300)
                     parar()
+                    levantar(300)
+                    fechar(1)
+                    rotacionar(1000, 180)
+                    alinhar()
+                    enquanto(ultra(1)>30)farei{frente(300)}
+                    parar()
+                    rotacionar(1000, 90)
+                    enquanto(luz(3)>8)farei{frente(300)}
+                    parar()
+                    baixar(600)
+                    esperar(500)
+                    levantar(600)
+                    # Resgatar a vitima
+                }
+            } senao {
+                #trasrotacao(1000, 30)
+                #Foi para tras e não achou nenhuma vitima então vai em direção do meio da arena e no caminha procura vitimas
+                rotacionar(1000, 90)
+                alinhar()
+                graus = arredondar(direcao())
+                abrir(1)
+                baixar(600)
+                zerartemporizador()
+                enquanto(temporizador()<1300 e temvitima()==falso e ultra(2)>100)farei{frente(300)}
+                parar()
+                se(ultra(2)<110)entao{
+                    #Achou vitimas antes de chegar no meio
+                    escrevernumero(1, ultra(2))
+                    vitimapos = ultra(2)
+                    levantar(600)
+                    fechar(1)
+                    rotacionar(1000, 90)
+                    alinhar()
+                    se(vitimapos<30)entao{
+                        tras(300)
+                        esperar(300)
+                    }
                     abrir(1)
                     baixar(600)
-                    zerartemporizador()
-                    enquanto(temvitima()==falso)farei{
-                        escrevernumero(1, temporizador())
+                    enquanto(temvitima()==falso)farei{frente(300)}
+                    parar()
+                    se(temvitima())entao{
                         frente(300)
+                        levantar(300)
+                        parar()
+                        levantar(300)
+                        fechar(1)
+                        rotacionar(1000, 90)
+                        alinhar()
+                        enquanto(ultra(1)>30)farei{frente(300)}
+                        parar()
+                        rotacionar(1000, 90)
+                        enquanto(luz(3)>8)farei{frente(300)}
+                        parar()
+                        baixar(600)
+                        esperar(500)
+                        levantar(600)
+                        # Resgatar a vitima
                     }
-                    recuar = temporizador()
-                    zerartemporizador()
-                    parar()
+                }senao se(temvitima()==verdadeiro)entao{
+                    #achou vitimas com a garra enquanto ia
                     frente(300)
-                    levantar(600)
-                    parar()
+                    levantar(300)
+                    levantar(300)
                     fechar(1)
-                    tras(300)
-                    esperar(recuar)
+                    rotacionar(1000, 180)
+                    alinhar()
+                    enquanto(ultra(1)>30)farei{frente(300)}
                     parar()
-                    enquanto(arredondar(direcao())!=graus + 180)farei{esquerda(1000)}
-		            parar()
-                    esperar(10000)
-                }
-            } # Verificação se tem vitima
+                    rotacionar(1000, 90)
+                    enquanto(luz(3)>8)farei{frente(300)}
+                    parar()
+                    #abrir(1)
+                    baixar(600)
+                    esperar(500)
+                    #fechar(1)
+                    levantar(600)
+                    # Resgatar a vitima
+                } senao {
+                    #chegou ao meio e vai girar procurando vitimas
+                    fechar(1)
+                    levantar(600)
+                    enquanto(ultra(2)>100)farei{direita(1000)}
+                    parar()
+                    se(ultra(2)<100)entao{
+                        acenderled("VERMELHO")
+                        parar()
+                        rotacionar(1000, 95)
+                        tras(300)
+                        esperar(300)
+                        parar()
+                        abrir(1)
+                        baixar(600)
+                        zerartemporizador()
+                        enquanto(temvitima()==falso)farei{
+                            escrevernumero(1, temporizador())
+                            frente(300)
+                        }
+                        recuar = temporizador()
+                        zerartemporizador()
+                        parar()
+                        frente(300)
+                        levantar(600)
+                        parar()
+                        fechar(1)
+                        tras(300)
+                        esperar(recuar)
+                        parar()
+                        escrevernumero(1, direcao())
+                        escrevernumero(2, graus+180)
+                        enquanto(arredondar(direcao())!=graus + 180)farei{
+                            se(direcao()>(graus+180) / 2)entao{
+                                direita(1000)
+                            } senao se(direcao()<(graus+180) / 2)entao{
+                                esquerda(1000)
+                            }
+                        }
+                        parar()
+                        enquanto(ultra(1)>30)farei{frente(300)}
+                        parar()
+                        rotacionar(1000, 90)
+                        enquanto(luz(3)>8)farei{frente(300)}
+                        parar()
+                        tras(300)
+                        esperar(100)
+                        baixar(600)
+                        esperar(500)
+                        levantar(600)
+                        #esperar(10000)
+                    }
+                } # Verificação se tem vitima
+            }
         } # Aqui fecha o loop do resgate
     } senao {
         rampa()
@@ -437,7 +537,6 @@ inicio
 velocidadeatuador(150)
 levantar(900)
 zerartemporizador()
-
 enquanto(verdadeiro)farei{
     seperdeu()
 }
