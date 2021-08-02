@@ -5,24 +5,24 @@ tarefa seguelinha{
         se(luz(2)<40) entao{
             parar()
         } senao{
-            direita(1000)
+            rotacionar(1000, 1)
         }
     } senao{
         se(luz(2)<40)entao{
-            esquerda(1000)
+            rotacionar(1000, negativo(1))
         } senao {
             frente(120)
         }
     }
 }
 tarefa curva90{
-    se(luz(1)<10)entao{
+    se(luz(1)<15)entao{
         frente(300)
-        esperar(100)
+        esperar(150)
         enquanto(cor(2)=="BRANCO")farei{direita(1000)}
-    } senao se(luz(2)<10) entao{
+    } senao se(luz(2)<15) entao{
         frente(300)
-        esperar(100)
+        esperar(150)
         enquanto(cor(1)=="BRANCO")farei{esquerda(1000)}
     } senao{
         seguelinha()
