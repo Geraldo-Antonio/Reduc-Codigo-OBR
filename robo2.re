@@ -4,6 +4,34 @@ numero velocidade = 100
 booleano temp = verdadeiro
 numero tempCont = 0
 numero ULTIMO = 0
+numero triangulo = 0
+numero recuar = 0
+numero graus = 0
+tarefa alinhar {
+    escrevernumero(2, direcao())
+	se(direcao()>230 e direcao()<300)entao{
+	    escrever(1, "270")
+	    rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+		parar()
+	} senao se(direcao()>300 ou direcao()<40)entao{
+		escrever(1, "0")
+		rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
+		parar()
+	} senao se(direcao()>40 e direcao()<130)entao{
+		escrever(1, "90")
+		rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
+		parar()
+	} senao se(direcao()>130 e direcao()<230)entao{
+		escrever(1, "180")
+		rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
+		parar()
+	}
+}
+
 tarefa seguelinha{
     se(cor(1)=="PRETO")entao{
         se(cor(2)=="PRETO") entao{
@@ -33,12 +61,15 @@ tarefa seguelinha{
                     zerartemporizador()
                 }
             }
+            zerartemporizador()
         } senao{
             direita(1000)
+            zerartemporizador()
         }
     } senao{
         se(cor(2)=="PRETO")entao{
             esquerda(1000)
+            zerartemporizador()
         } senao {
             frenterotacao(velocidade, 0.1)
         }
@@ -62,6 +93,7 @@ tarefa curva90{
             parar()
             zerartemporizador()
         }
+        zerartemporizador()
     } senao se(luz(2)<2) entao{
         escrever(1, "CURVA DE 90 PARA A ESQUERDA")
         ULTIMO = 2
@@ -79,6 +111,7 @@ tarefa curva90{
             parar()
             zerartemporizador()
         }
+        zerartemporizador()
     } senao{
         seguelinha()
     }
@@ -229,18 +262,122 @@ tarefa rampa{
         velocidade = 100
         escrever(1, "RAMPAAAA!!!!")
         zerartemporizador()
-        enquanto(temporizador()<1500)farei{obstaculo()}
+        enquanto(temporizador()<1300)farei{obstaculo()}
         parar()
-        esperar(1000)
+        esperar(2000)
         escrever(1, "RAMPA FINALIZADA")
+        zerartemporizador()
     } senao {
         obstaculo()
     }
 }
 tarefa resgate{
-    se(inclinacao()>0 e inclinacao<350 e ultra(2)<100)entao{
+    se(inclinacao()>0 e inclinacao()<350 e ultra(2)<40)entao{
         parar()
         acenderled("VERDE")
+        velocidade = 200
+        enquanto(inclinacao()!=0)farei{
+            seguelinha()
+        }
+        alinhar()
+        temp = falso
+        rotacionar(1000, negativo(40))
+        frente(300)
+        esperar(500)
+        rotacionar(1000, 40)
+        tras(300)
+        esperar(500)
+        parar()
+        abrir(1)
+        baixar(1000)
+        enquanto(verdadeiro)farei{
+            parar()
+            triangulo = triangulo + 1
+            enquanto(ultra(1)>140)farei{frente(300)}
+            parar()
+            levantar(600)
+            fechar(1)
+            enquanto(luz(3)>12 e ultra(1)>35)farei{frente(300)}
+			parar()
+            se(cor(3)=="PRETO")entao{interromper()}
+            rotacionar(1000, 40)
+            frente(300)
+            esperar(300)
+            rotacionar(1000, 55)
+            alinhar()
+            abrir(1)
+            baixar(600)
+        }
+        se(temvitima())entao{
+            abrir(1)
+            baixar(600)
+            esperar(300)
+            fechar(1)
+            levantar(600)
+        }
+        enquanto(verdadeiro)farei{
+            trasrotacao(1000, 30)
+            rotacionar(1000, 90)
+            alinhar()
+            graus = direcao()
+            abrir(1)
+            baixar(600)
+            zerartemporizador()
+            enquanto(temporizador()<1300 e temvitima()==falso)farei{frente(300)}
+            parar()
+            se(temvitima()==verdadeiro)entao{
+                frente(300)
+                levantar(300)
+                levantar(300)
+                fechar(1)
+                rotacionar(1000, 180)
+                alinhar()
+                enquanto(ultra(1)>30)farei{frente(300)}
+                parar()
+                rotacionar(1000, 90)
+                enquanto(luz(3)>8)farei{frente(300)}
+                parar()
+                #abrir(1)
+                baixar(600)
+                esperar(500)
+                #fechar(1)
+                levantar(600)
+                # Resgatar a vitima
+            } senao {
+                fechar(1)
+                levantar(600)
+                enquanto(ultra(2)>100)farei{direita(1000)}
+                parar()
+                se(ultra(2)<100)entao{
+                    acenderled("VERMELHO")
+                    parar()
+                    rotacionar(1000, 95)
+                    tras(300)
+                    esperar(300)
+                    parar()
+                    abrir(1)
+                    baixar(600)
+                    zerartemporizador()
+                    enquanto(temvitima()==falso)farei{
+                        escrevernumero(1, temporizador())
+                        frente(300)
+                    }
+                    recuar = temporizador()
+                    zerartemporizador()
+                    parar()
+                    frente(300)
+                    levantar(600)
+                    parar()
+                    fechar(1)
+                    tras(300)
+                    esperar(recuar)
+                    parar()
+                    enquanto(arredondar(direcao())!=graus + 180)farei{esquerda(1000)}
+		            parar()
+                    esperar(10000)
+                }
+            } # Verificação se tem vitima
+        } # Aqui fecha o loop do resgate
     } senao {
         rampa()
     }
@@ -250,7 +387,7 @@ tarefa seperdeu{
     se(temporizador()>800 e temp==verdadeiro)entao{
 		parar()
 		zerartemporizador()
-		enquanto(cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1200)farei{
+		enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1200)farei{
 			se(ULTIMO==1)entao{
 				direita(1000)
 			} senao se (ULTIMO==2)entao{
@@ -262,7 +399,7 @@ tarefa seperdeu{
 		parar()
 		se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
 			zerartemporizador()
-			enquanto(cor(3)=="BRANCO" e cor(4)=="BRANCO" e temporizador()<2400)farei{
+			enquanto(cor(2)=="BRANCO" e temporizador()<2400)farei{
 				se(ULTIMO==1)entao{
 					esquerda(1000)
 				} senao se (ULTIMO==2)entao{
@@ -272,7 +409,7 @@ tarefa seperdeu{
 				}
 			}
 			zerartemporizador()
-			se(cor(3)=="BRANCO" e cor(4)=="BRANCO")entao{
+			se(cor(2)=="BRANCO")entao{
 				se(ULTIMO==1)entao{
 					direita(1000)
 					esperar(1200)
