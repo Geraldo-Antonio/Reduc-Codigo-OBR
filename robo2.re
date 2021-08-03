@@ -13,22 +13,22 @@ tarefa alinhar {
 	se(direcao()>230 e direcao()<300)entao{
 	    escrever(1, "270")
 	    rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+		enquanto(arredondar(direcao())!=270)farei{esquerda(500)}
 		parar()
 	} senao se(direcao()>300 ou direcao()<40)entao{
 		escrever(1, "0")
 		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
+		enquanto(arredondar(direcao())!=0)farei{esquerda(500)}
 		parar()
 	} senao se(direcao()>40 e direcao()<130)entao{
 		escrever(1, "90")
 		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
+		enquanto(arredondar(direcao())!=90)farei{esquerda(500)}
 		parar()
 	} senao se(direcao()>130 e direcao()<230)entao{
 		escrever(1, "180")
 		rotacionar(1000, 5)
-		enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
+		enquanto(arredondar(direcao())!=180)farei{esquerda(500)}
 		parar()
 	}
 }
@@ -280,6 +280,8 @@ tarefa resgate{
         enquanto(inclinacao()!=0 e ultra(2)<40)farei{
             seguelinha()
         }
+        frente(300)
+        esperar(300)
         alinhar()
         temp = falso
         rotacionar(1000, negativo(40))
@@ -338,8 +340,8 @@ tarefa resgate{
                 enquanto(temvitima()==falso e ultra(1)>45)farei{frente(300)}
                 parar()
                 se(ultra(1)<45)entao{
-                    levantar(600)
                     fechar(1)
+                    levantar(600)
                 }
                 se(temvitima())entao{
                     frente(300)
@@ -455,13 +457,7 @@ tarefa resgate{
                         parar()
                         escrevernumero(1, direcao())
                         escrevernumero(2, graus+180)
-                        enquanto(arredondar(direcao())!=graus + 180)farei{
-                            se(direcao()>(graus+180) / 2)entao{
-                                direita(1000)
-                            } senao se(direcao()<(graus+180) / 2)entao{
-                                esquerda(1000)
-                            }
-                        }
+                        enquanto(arredondar(direcao())!=graus + 180)farei{esquerda(1000)}
                         parar()
                         enquanto(ultra(1)>30)farei{frente(300)}
                         parar()
