@@ -8,6 +8,7 @@ numero triangulo = 0
 numero recuar = 0
 numero graus = 0
 numero vitimapos = 0
+numero antigapos = 0
 tarefa alinhar {
     escrevernumero(2, direcao())
 	se(direcao()>230 e direcao()<300)entao{
@@ -261,12 +262,25 @@ tarefa obstaculo{
 tarefa rampa{
     se(arredondar(inclinacao())==340 e ultra(2)>100)entao{
         velocidade = 100
-        escrever(1, "RAMPAAAA!!!!")
+        escrever(1, "ELEVAÇÂO DETECTADA")
         zerartemporizador()
         enquanto(temporizador()<1300)farei{obstaculo()}
         parar()
+        antigapos = arredondar(inclinacao())
         esperar(2000)
         escrever(1, "RAMPA FINALIZADA")
+        se(antigapos == arredondar(inclinacao()))entao{
+            escrever(2, "RAMPA")
+            enquanto(arredondar(inclinacao())!=0)farei{obstaculo() escrever(3, "CONTINUANDO RAMPA")}
+            parar()
+            #escrever(3, "PROCURANDO DESCIDA")
+            #enquanto(arredondar(inclinacao())>10 e arredondar(inclinacao())<25)farei{obstaculo() escrever(3, "DESCENDO RAMPA")}
+            #parar()
+            #zerartemporizador()
+            #enquanto(temporizador()<1500)farei{obstaculo()}
+        } senao {
+            escrever(2, "GANGORRA")
+        }
         zerartemporizador()
     } senao {
         obstaculo()
@@ -372,7 +386,7 @@ tarefa resgate{
                 zerartemporizador()
                 enquanto(temporizador()<1300 e temvitima()==falso e ultra(2)>100)farei{frente(300)}
                 parar()
-                se(ultra(2)<110)entao{
+                se(ultra(2)<100)entao{
                     #Achou vitimas antes de chegar no meio
                     escrevernumero(1, ultra(2))
                     vitimapos = ultra(2)
