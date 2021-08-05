@@ -335,12 +335,12 @@ tarefa resgate{
         enquanto(verdadeiro)farei{
             zerartemporizador()
             # Vai para tras apos achar o trinagulo e procura vitimas
-            enquanto(temporizador()<850 e ultra(2)>230)farei{tras(300)}
+            enquanto(temporizador()<1800 e ultra(2)>230 e toque(1)==falso)farei{tras(300)}
             parar()
             se(ultra(2)<230)entao{
                 escrevernumero(1, ultra(2))
                 vitimapos = ultra(2)
-                trasrotacao(1000, 3)
+                trasrotacao(1000, 5)
                 rotacionar(1000, 90)
                 alinhar()
                 se(vitimapos<30)entao{
@@ -361,8 +361,8 @@ tarefa resgate{
                     frente(300)
                     levantar(300)
                     parar()
-                    levantar(300)
                     fechar(1)
+                    levantar(300)
                     rotacionar(1000, 180)
                     alinhar()
                     enquanto(ultra(1)>30)farei{frente(300)}
@@ -370,21 +370,26 @@ tarefa resgate{
                     rotacionar(1000, 90)
                     enquanto(luz(3)>8)farei{frente(300)}
                     parar()
+                    #trasrotacao(1000, 3)
+                    girarbaixo(1000)
                     baixar(600)
                     esperar(500)
                     levantar(600)
+                    girarcima(1000)
                     # Resgatar a vitima
                 }
             } senao {
                 #trasrotacao(1000, 30)
                 #Foi para tras e não achou nenhuma vitima então vai em direção do meio da arena e no caminha procura vitimas
-                rotacionar(1000, 90)
+                rotacionar(1000, negativo(90))
                 alinhar()
                 graus = arredondar(direcao())
-                abrir(1)
-                baixar(600)
+                enquanto(ultra(1)<80)farei{tras(300)}
+                parar()
+                #abrir(1)
+                #baixar(600)
                 zerartemporizador()
-                enquanto(temporizador()<1300 e temvitima()==falso e ultra(2)>100)farei{frente(300)}
+                enquanto(temporizador()<1800 e temvitima()==falso e ultra(2)>100)farei{tras(300)}
                 parar()
                 se(ultra(2)<100)entao{
                     #Achou vitimas antes de chegar no meio
