@@ -1,51 +1,3 @@
-enquanto(verdadeiro)farei{
-			triangulo = triangulo + 1
-            se(ultra(3)>900 e triangulo==1)entao{
-                saida = 3
-            }senao se(triangulo == 1 e ultra(1)>1000)entao{
-                saida = 1
-            } senao se(triangulo==2 e ultra(1)>1000){
-                saida = 2
-            } senao se(triangulo == 2)entao{
-                tras(300)
-                esperar(300)
-                se(toque(1!=falso))entao{
-                    saida = 1
-                }
-            } senao se (triangulo==3 e ultra(3)>900) entao{
-                saida = 2
-            } senao se (triangulo==3 e ultra(1)>900) entao{
-                saida = 3
-            }
-			frente(300)
-			esperar(300)
-			tras(300)
-			esperar(300)
-			parar()
-			se(toque(1)==falso)entao{
-				se(triangulo==1)entao{saida=1}
-				senao se(triangulo==2)entao{saida=2}
-			}
-			velocidadeatuador(150)
-			abrir(1)
-			baixar(600)
-			enquanto(ultra(1)>120)farei{frente(300)}
-			parar()
-			levantar(600)
-			fechar(1)
-			velocidadeatuador(50)
-			enquanto(luz(5)>12 e ultra(1)>15)farei{frente(300)}
-			parar()
-			se(cor(5)=="PRETO")entao{
-				interromper()
-			}
-			rotacionar(1000, 90)
-
-}
-
-
-///BACKUP DO CÒDIGO SO PARA GARANTIR.
-
 numero travou = 0
 numero sensor = 0
 numero seguidor = 1
@@ -68,18 +20,42 @@ numero PERDEU = 0
 numero tempCont = 0
 booleano resgateF = falso
 booleano pegar = falso
-numero resgate90 = 0
+numero contVermelho = 0
 numero saida = 0
+tarefa alinhar {
+    escrevernumero(2, direcao())
+	se(direcao()>230 e direcao()<300)entao{
+	    escrever(1, "270")
+	    rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
+		parar()
+	} senao se(direcao()>300 ou direcao()<40)entao{
+		escrever(1, "0")
+		rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
+		parar()
+	} senao se(direcao()>40 e direcao()<130)entao{
+		escrever(1, "90")
+		rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
+		parar()
+	} senao se(direcao()>130 e direcao()<230)entao{
+		escrever(1, "180")
+		rotacionar(1000, 5)
+		enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
+		parar()
+	}
+}
 tarefa seguelinha{
-	se(luz(2)>20)entao{
-		se(luz(3)>20)entao{
-			frente(200)			
+	se(luz(2)>30)entao{
+		se(luz(3)>30)entao{
+			frente(segueF)			
 		} senao {
 			zerartemporizador()
 			esquerda(1000)
 		}
 	} senao{
-		se(luz(3)>20)entao{
+		se(luz(3)>30)entao{
 			zerartemporizador()
 			direita(1000)
 		} senao {
@@ -122,9 +98,11 @@ tarefa seguelinha{
 	}
 }
 tarefa curva90 {
-	se(luz(1)<35)entao{
+	se(luz(1)<35 ou cor(1)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
+		contVermelho = 0
+		ULTIMO = 1
 		parar()
 		frente(300)
 		esperar(150)
@@ -140,9 +118,11 @@ tarefa curva90 {
             enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
         }
 		zerartemporizador()
-	} senao se(luz(4)<35)entao{
+	} senao se(luz(4)<35 ou cor(4)=="PRETO")entao{
 		zerartemporizador()
 		tempCont = 0
+		contVermelho = 0
+		ULTIMO = 2
 		parar()
 		frente(300)
 		esperar(150)
@@ -184,16 +164,23 @@ tarefa verde{
 			    enquanto(cor(3)=="BRANCO")farei{direita(1000)}
 			    parar()
             } senao {
-			    rotacionar(1000, 90)
-			    enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{direita(1000)}
+			    rotacionar(1000, negativo(90))
+			    enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO")farei{esquerda(1000)}
             }
 		} senao {
 			frente(300)
 			esperar(300)
 			direita(1000)
 			esperar(600)
-			enquanto(cor(3)=="BRANCO")farei{direita(1000)}
+			zerartemporizador()
+			enquanto(cor(3)=="BRANCO" e temporizador()<2500)farei{direita(1000)}
 			parar()
+			se(cor(3)=="BRANCO")entao{
+				tras(300)
+				esperar(70)
+				enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
+				parar()
+			}
 		}
 		zerartemporizador()
 	} senao se(cor(3)=="VERDE" ou cor(4)=="VERDE")entao{
@@ -224,8 +211,15 @@ tarefa verde{
 			esperar(300)
 			esquerda(1000)
 			esperar(600)
-			enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
+			zerartemporizador()
+			enquanto(cor(2)=="BRANCO" e temporizador()<2500)farei{esquerda(1000)}
 			parar()
+			se(cor(2)=="BRANCO")entao{
+				tras(300)
+				esperar(70)
+				enquanto(cor(3)=="BRANCO")farei{direita(1000)}
+				parar()
+			}
 		}
 		zerartemporizador()
 	} senao {
@@ -245,15 +239,16 @@ se (ultra(1) < 15) entao{
 			enquanto(ultra(1)<50)farei{direita(1000)}
 			parar()
 			rotacionar(1000, 20)
+
 			frente(300)
 			esperar(600)
 			zerartemporizador()
-			enquanto(cor(2)=="BRANCO" e (ultra(3)<50) e ultra(1)>15 e ultra(2)>25)farei{frente(100)}
+			enquanto(cor(2)=="BRANCO" e (ultra(3)<50) e ultra(1)>20 e ultra(2)>25)farei{frente(100)}
 			parar()
 			se(cor(2)!="PRETO" e cor(3)!="PRETO")entao{
 				rotacionar(1000, negativo(45))
 				frente(300)
-				esperar(300)
+				esperar(600)
 				enquanto(ultra(3)<50)farei{frente(300)}
 				parar()
 				rotacionar(1000, negativo(55))
@@ -297,6 +292,7 @@ se (ultra(1) < 15) entao{
  	}
 }
 tarefa procurando{
+			luz5 = luz(5)
 			frente(300)
 			esperar(100)
 			parar()
@@ -311,27 +307,33 @@ tarefa procurando{
 				frente(300)	
 			}
 			parar()
+			#se(luz(5)!=luz5)entao{
+				#tras(300)
+				#esperar(350)
+				#abrir(1)
+				#baixar(900)
+				#enquanto((ultra(2)>ULTRA2 - 10 e ultra(3)>ULTRA3 - 5) e (ultra(1)>25 e temvitima()==falso))farei{
+					#frente(300)	
+				#}
+				#parar()
+			#}
 			se(temvitima()==verdadeiro)entao{
-                velocidadeatuador(50)
+                velocidadeatuador(150)
 				frente(300)
 				levantar(1000)
                 parar()
-                levantar(500)
 				fechar(1)
                 rotacionar(1000, 180)
                 enquanto(cor(5)=="BRANCO")farei{frente(300)}
                 parar()
-                velocidadeatuador(150)
-			    girarbaixo(1000)
-			    baixar(1000)
-			    parar()
-			    esperar(500)
-			    levantar(1000)
-			    girarcima(1000)
+				baixar(650)
+				esperar(500)
+				levantar(700)
                 rotacionar(1000, 180)
+				alinhar()
 			} senao {
 				fechar(1)
-				levantar(1000)
+				levantar(500)
 			}
 			parar()
 }
@@ -340,61 +342,45 @@ tarefa procurandoSegundo{
 			enquanto((ultra(2)>ULTRA2 - 10 e ultra(3)>ULTRA3 - 5) e (ultra(1)>20 e temporizador()<1000))farei{
 				frente(300)
 			}
+            parar()
 }
 tarefa resgate{
-se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
-      enquanto(ultra(2)<50 e ultra(3)<50)farei{seguelinha()}
+se((ultra(2)<50 e ultra(2)>20) e (ultra(3)<50 e ultra(3)>20) e (inclinacao()<345 e inclinacao()>0))entao{
+		segueF = 300
+	  	enquanto(ultra(2)<50 e ultra(3)<50)farei{
+			  seguelinha()
+			  acenderled("VERMELHO")
+		}
 		parar()
+		segueF = 180
 		velocidadeatuador(150)
 		temp = falso
 		acenderled("VERDE")
 		preto = 0
 		frente(300)
 		esperar(600)
-		se(ultra(3)<35)entao{
+		se(ultra(3)<50)entao{
 		frente(300)
 		esperar(400)
 		tras(300)
 		esperar(400)
 		parar()
-		se(direcao()>230 e direcao()<300)entao{
-			resgate90 = 270
-			escrever(1, "270")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
-			parar()
-		} senao se(direcao()>300 ou direcao()<40)entao{
-			resgate90 = 0
-			escrever(1, "0")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
-			parar()
-		} senao se(direcao()>40 e direcao()<130)entao{
-			resgate90 = 90
-			escrever(1, "90")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
-			parar()
-		} senao se(direcao()>130 e direcao()<230)entao{
-			resgate90 = 180
-			escrever(1, "180")
-			rotacionar(1000, 5)
-			enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
-			parar()
-		}
+		#alinhar()
 		comentar("Procurando pelo triangulo")
+		se(ultra(2)>500)entao{saida=3}
+		#rotacionar(1000, 5)
 		enquanto(verdadeiro)farei{
-			triangulo = triangulo + 1
-            escrevernumero(1, saida)
-			frente(300)
-			esperar(300)
-			tras(300)
-			esperar(300)
 			parar()
-			se(toque(1)==falso)entao{
-				se(triangulo==1)entao{saida=1}
-				senao se(triangulo==2)entao{saida=2}
-			}
+			rotacionar(1000, 5)
+			alinhar()
+			triangulo = triangulo + 1
+			escrevernumero(1, triangulo)
+            escrevernumero(2, saida)
+			frente(300)
+			esperar(600)
+			tras(300)
+			esperar(600)
+			parar()
 			velocidadeatuador(150)
 			abrir(1)
 			baixar(600)
@@ -405,40 +391,34 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 			velocidadeatuador(50)
 			enquanto(luz(5)>12 e ultra(1)>15)farei{frente(300)}
 			parar()
+			escrever(3, "verificar o triangulo agora")
 			se(cor(5)=="PRETO")entao{
 				interromper()
 			}
-            se(ultra(3)>900 e triangulo==1)entao{
-                saida = 3
-            }senao se(triangulo == 1 e ultra(1)>1000)entao{
-                saida = 1
-            } senao se(triangulo==2 e ultra(1)>1000)entao{
-                saida = 2
-            } senao se(triangulo == 2)entao{
-                tras(300)
-                esperar(300)
-                se(toque(1)!=falso)entao{
-                    saida = 1
-                }
-            } senao se (triangulo==3 e ultra(3)>900) entao{
-                saida = 2
-            } senao se (triangulo==3 e ultra(1)>900) entao{
-                saida = 3
-            }
+
+            se(triangulo==2 e ultra(3)>500)entao{saida=2}
+			senao se(triangulo==1 e ultra(3)>500)entao {saida=1}
+			#senao{saida = 0}
+			escrevernumero(2, saida)
 			rotacionar(1000, 90)
 
 		}
 		comentar("achou o tiangulo")
         se(temvitima()!=falso)entao{
-            velocidadeatuador(150)
-			girarbaixo(1000)
-			baixar(1000)
-			parar()
-			esperar(1000)
+            #velocidadeatuador(150)
+			#girarbaixo(1000)
+			#baixar(1000)
+			#parar()
+			#esperar(1000)
+			#velocidadeatuador(150)
+			#levantar(1000)
+			#girarcima(1000)
+			#velocidadeatuador(50)
 			velocidadeatuador(150)
-			levantar(1000)
-			girarcima(1000)
-			velocidadeatuador(50)
+			baixar(650)
+			esperar(500)
+			velocidadeatuador(150)
+			levantar(700)
         }
 		apagarled()
 		rotacionar(1000, 40)
@@ -454,28 +434,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 		ULTRA3 = ultra(3)
 		resgatepos = 0
 		enquanto(verdadeiro)farei{
-			escrevernumero(2, direcao())
-			se(direcao()>230 e direcao()<300)entao{
-				escrever(1, "270")
-				rotacionar(1000, 5)
-				enquanto(arredondar(direcao())!=270)farei{esquerda(1000)}
-				parar()
-			} senao se(direcao()>300 ou direcao()<40)entao{
-				escrever(1, "0")
-				rotacionar(1000, 5)
-				enquanto(arredondar(direcao())!=0)farei{esquerda(1000)}
-				parar()
-			} senao se(direcao()>40 e direcao()<130)entao{
-				escrever(1, "90")
-				rotacionar(1000, 5)
-				enquanto(arredondar(direcao())!=90)farei{esquerda(1000)}
-				parar()
-			} senao se(direcao()>130 e direcao()<230)entao{
-				escrever(1, "180")
-				rotacionar(1000, 5)
-				enquanto(arredondar(direcao())!=180)farei{esquerda(1000)}
-				parar()
-			}
+			alinhar()
 			escrevernumero(1, ultra(2))
 			escrevernumero(2, ULTRA2)
 			escrevernumero(3, resgatepos)
@@ -493,7 +452,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
             se(ULTRA2<150)entao{
                 pegar = verdadeiro
             } senao{pegar = falso}
-
+            se(ULTRA2<100 e resgatepos==0)entao{ULTRA2 = 160}
 			se(resgatepos!=0)entao{
 				procurandoSegundo()
 				se(temporizador()>=1000)entao{
@@ -503,15 +462,36 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				}
                 zerartemporizador()
 			} senao {procurando()}
-
 			parar()
+            # Desativa o pegar como verdadeiro para evitar problemas com o triangulo
+            se(resgatepos != 0)entao{pegar = falso}
+            se(resgatepos == 1)entao{pegar = falso}
+            escreverbooleano(3, pegar)
 			se(ultra(1)<30)entao{
 				parar()
 				resgatepos = resgatepos + 1
 				se(resgatepos==1)entao{
+                    se(ultra(3)>900 e saida==0 e triangulo==1)entao{saida=2}
+					se(temvitima()==verdadeiro)entao{
+						rotacionar(1000, 180)
+						enquanto(cor(5)=="BRANCO")farei{frente(300)}
+						parar()
+						girarbaixo(1000)
+						baixar(1000)
+						parar()
+						esperar(500)
+						levantar(1000)
+						girarcima(1000)
+						rotacionar(1000, 180)
+					}
+					enquanto(ultra(1)>30)farei{frente(300)}
+					parar()
+					pegar = falso
 					trasrotacao(300,40)
 					rotacionar(1000, 90)
+					alinhar()
 				} senao{
+					se(resgatepos==2 e ultra(3)>500 e saida==0)entao{saida=3}
 					trasrotacao(300, 5)
 					rotacionar(1000, 180)
 				}
@@ -522,8 +502,141 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				ULTRA2 = ultra(2)
 
 			}
-            se(resgatepos != 0)entao{pegar = falso}
-			se(ULTRA2>150)entao{pegar = falso}
+			escrevernumero(1, resgatepos)
+			#esperar(10000)
+            se(resgatepos==2)entao{
+                # ir para a saida
+				parar()
+				acenderled("AZUL")
+				limparconsole()
+				se(triangulo==1)entao{
+					escrevernumero(1, triangulo)
+					escrevernumero(2, saida)
+					se(saida==2)entao{
+						frenterotacao(300, 5)
+						rotacionar(1000, 90)
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 9)
+						enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(4)=="BRANCO")farei{esquerda(1000)}
+						parar()
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						frente(300)
+						esperar(200)
+						parar()
+						esperar(10000)
+					} senao se(saida == 3)entao{
+						frenterotacao(300, 10)
+						rotacionar(1000, 180)
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 9)
+						enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(4)=="BRANCO")farei{esquerda(1000)}
+						parar()
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						frente(300)
+						esperar(200)
+						parar()
+						esperar(10000)
+					}
+				}senao se(triangulo==2)entao{
+					escrevernumero(1, triangulo)
+					escrevernumero(2, saida)
+					parar()
+					se(saida==1)entao{
+						rotacionar(1000, negativo(90))
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 9)
+						enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(4)=="BRANCO")farei{esquerda(1000)}
+						parar()
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						frente(300)
+						esperar(200)
+						parar()
+						esperar(10000)
+					} senao se(saida==3)entao{
+						frenterotacao(300, 50)
+						alinhar()
+						rotacionar(1000, 90)
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 9)
+						enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(4)=="BRANCO")farei{esquerda(1000)}
+						parar()
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						frente(300)
+						esperar(200)
+						parar()
+						esperar(10000)
+					}
+				} senao se(triangulo==3)entao{
+					escrevernumero(1, triangulo)
+					escrevernumero(2, saida)
+					parar()
+					se(saida == 1) entao{
+						rotacionar(1000, 180)
+						trasrotacao(1000, 10)
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 9)
+						enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(4)=="BRANCO")farei{esquerda(1000)}
+						parar()
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						frente(300)
+						esperar(200)
+						parar()
+						esperar(10000)
+					}senao se(saida==2)entao{
+						rotacionar(1000, negativo(90))
+						enquanto(ultra(1)>25)farei{frente(300)}
+						parar()
+						rotacionar(1000, negativo(90))
+						alinhar()
+						enquanto(ultra(2)<500 ou ultra(3)<500)farei{frente(300)}
+						parar()
+						trasrotacao(300, 9)
+						enquanto(cor(2)=="BRANCO" e cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(4)=="BRANCO")farei{esquerda(1000)}
+						parar()
+						enquanto(cor(2)!="VERMELHO")farei{obstaculo()}
+						parar()
+						frente(300)
+						esperar(200)
+						parar()
+						esperar(10000)
+					} senao se(saida==3)entao{
+						limparconsole()
+						escrever(1, "SAIDA ACHADA NO 3")
+						parar()
+						esperar(50000)
+					}
+				}
+            }
 			se(ultra(2)<ULTRA2 - 5 ou pegar==verdadeiro)entao{
 				pegar = falso
 				parar()
@@ -532,20 +645,98 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				esperar(200)
 				parar()
 				rotacionar(1000, 90)
-				trasrotacao(300, 8)
+				tras(300)
+				esperar(310)
 				parar()
+				velocidadeatuador(150)
                 abrir(1)
-                baixar(1000)
+                baixar(500)
 				
 				enquanto(temvitima()==falso e ultra(1)>30)farei{frente(300)}
 				parar()
 				se(ultra(1)<30)entao{
 					se(resgatepos==0)entao{
+						levantar(500)
+						fechar(1)
 						trasrotacao(1000, 100)
+						se(temvitima()==falso)entao{rotacionar(1000, negativo(90))}
 					} senao {
+						levantar(500)
+						fechar(1)
 						trasrotacao(1000, 50)
 					}
-					rotacionar(1000, negativo(90))
+					
+					se(temvitima() == verdadeiro)entao{
+						se(resgatepos==0)entao{
+							rotacionar(1000, 90)
+							enquanto(cor(5)=="BRANCO" e ultra(1)>27)farei{frente(300)}
+							parar()
+							se(cor(5)=="PRETO")entao{
+								velocidadeatuador(150)
+								baixar(650)
+								esperar(500)
+								velocidadeatuador(150)
+								levantar(700)
+								rotacionar(1000, 180)
+								alinhar()
+								resgatepos = 0
+							} senao {
+								rotacionar(1000, 90)
+								enquanto(luz(5)>12)farei{
+									se(ultra(1)<40)entao{
+										rotacionar(500, negativo(25))
+									} senao {frente(300)}
+								}
+								parar()
+								
+								velocidadeatuador(150)
+								baixar(650)
+								esperar(500)
+								velocidadeatuador(150)
+								levantar(700)
+								acenderled("VERMELHO")
+								rotacionar(1000, 40)
+								se(ultra(1)>40)entao{
+									enquanto(ultra(1)>50)farei{frente(300)}
+								} senao {
+									enquanto(ultra(1)<50)farei{tras(300)}
+								}
+								parar()
+								rotacionar(1000, 45)
+								apagarled()
+								resgatepos = 0
+
+							}
+						} senao {
+							#rotacionar(1000, 90)
+							enquanto(ultra(1)>27)farei{frente(300)}
+							parar()
+							rotacionar(1000, 90)
+							enquanto(luz(5)>12)farei{frente(300)}
+							parar()
+							velocidadeatuador(150)
+							girarbaixo(1000)
+							baixar(1000)
+							parar()
+							esperar(500)
+							velocidadeatuador(150)
+							levantar(1000)
+							girarcima(1000)
+							velocidadeatuador(50)
+							acenderled("VERMELHO")
+							rotacionar(1000, 40)
+							se(ultra(1)>40)entao{
+								enquanto(ultra(1)>50)farei{frente(300)}
+							} senao {
+								enquanto(ultra(1)<50)farei{tras(300)}
+							}
+							parar()
+							rotacionar(1000, 45)
+							apagarled()
+							resgatepos = 0
+						}
+					}
+					#rotacionar(1000, negativo(90))
 				} senao {
 					se(pegar==falso e 1==2)entao{
 						enquanto(toque(1)==falso)farei{tras(300)}
@@ -554,14 +745,15 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 						esperar(600)
 						rotacionar(1000, negativo(90))
 					} senao {
-					velocidadeatuador(50)
+					velocidadeatuador(150)
 					enquanto(temvitima()==falso e ultra(1)>30)farei{frente(300)}
 					parar()
 					frente(300)
-					levantar(1000)
+					levantar(300)
 					parar()
-					levantar(1000)
+					levantar(300)
 					fechar(1)
+					esperar(100)
 					se(temvitima()==falso)entao{
 						parar()
 						se(resgatepos==0)entao{
@@ -583,36 +775,54 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 					} senao{
 						se(resgatepos==0)entao{
 							rotacionar(1000, 90)
+							alinhar()
 						}
-						enquanto(ultra(1)>27)farei{frente(300)}
+						enquanto(ultra(1)>27 e luz(5)>7)farei{frente(300)}
 						parar()
-						rotacionar(1000, 90)
-						enquanto(luz(5)>12)farei{
-							se(ultra(1)<40)entao{
-								rotacionar(500, negativo(25))
-							} senao {frente(300)}
-						}
-						parar()
-						velocidadeatuador(150)
-						girarbaixo(1000)
-						baixar(1000)
-						parar()
-						esperar(500)
-						velocidadeatuador(150)
-						levantar(1000)
-						girarcima(1000)
-						velocidadeatuador(50)
-						acenderled("VERMELHO")
-						rotacionar(1000, 40)
-						se(ultra(1)>40)entao{
-							enquanto(ultra(1)>50)farei{frente(300)}
+						se(cor(5)=="PRETO")entao{
+							velocidadeatuador(150)
+							baixar(650)
+							esperar(500)
+							velocidadeatuador(150)
+							levantar(700)
+							rotacionar(1000, 180)
+							alinhar()
 						} senao {
-							enquanto(ultra(1)<50)farei{tras(300)}
+							rotacionar(1000, 90)
+							enquanto(luz(5)>12)farei{
+								se(ultra(1)<40)entao{
+									rotacionar(500, negativo(25))
+								} senao {frente(300)}
+							}
+							parar()
+							#velocidadeatuador(150)
+							#girarbaixo(1000)
+							#baixar(1000)
+							#parar()
+							#esperar(500)
+							#velocidadeatuador(150)
+							#levantar(1000)
+							#girarcima(1000)
+							#velocidadeatuador(50)
+							velocidadeatuador(150)
+							girarbaixo(500)
+							baixar(650)
+							esperar(500)
+							velocidadeatuador(150)
+							levantar(700)
+							girarcima(500)
+							acenderled("VERMELHO")
+							rotacionar(1000, 40)
+							se(ultra(1)>40)entao{
+								enquanto(ultra(1)>50)farei{frente(300)}
+							} senao {
+								enquanto(ultra(1)<50)farei{tras(300)}
+							}
+							parar()
+							rotacionar(1000, 45)
+							apagarled()
+							resgatepos = 0
 						}
-						parar()
-						rotacionar(1000, 45)
-						apagarled()
-						resgatepos = 0
 					}
 					}
 				}
@@ -625,7 +835,7 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 				esperar(150)
 				parar()
 				rotacionar(1000, negativo(90))
-				trasrotacao(300, 8)
+				trasrotacao(300, 10)
                 velocidadeatuador(150)
                 abrir(1)
                 baixar(1000)
@@ -646,11 +856,11 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 						rotacionar(1000, negativo(90))
 					} senao {
 					parar()
-					velocidadeatuador(50)
+					velocidadeatuador(150)
 					frente(300)
-					levantar(1000)
+					levantar(300)
 					parar()
-					levantar(1000)
+					levantar(350)
 					fechar(1)
 					comentar("Alteração aqui")
 					se(temvitima()==falso)entao{
@@ -699,12 +909,11 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 						interromper()
 					} senao {
 						se(cor(5)=="PRETO")entao{
-							velocidadeatuador(120)
+							velocidadeatuador(150)
 							baixar(650)
-							velocidadeatuador(50)
 							esperar(500)
 							velocidadeatuador(150)
-							levantar(1000)
+							levantar(700)
 							rotacionar(1000, 10)
 							interromper()
 						}
@@ -717,14 +926,18 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 					parar()
 					velocidadeatuador(50)
 					acenderled("VERMELHO")
-					rotacionar(1000, 60)
-					se(ultra(1)>40)entao{
-						enquanto(ultra(1)>50)farei{frente(300)}
+					se(resgatepos!=0)entao{
+						rotacionar(1000, 40)
+						se(ultra(1)>40)entao{
+							enquanto(ultra(1)>50)farei{frente(300)}
+						} senao {
+							enquanto(ultra(1)<50)farei{tras(300)}
+						}
+						parar()
+						rotacionar(1000, 45)
 					} senao {
-						enquanto(ultra(1)<50)farei{tras(300)}
+						rotacionar(1000, 180)
 					}
-					parar()
-					rotacionar(1000, 70)
 					apagarled()
 					resgatepos = 0
 					}
@@ -739,27 +952,43 @@ se(ultra(2)<50 e ultra(3)<50 e inclinacao()<350)entao{
 		}
 	} senao {obstaculo()}
 }
-inicio
-velocidadeatuador(500)
-levantar(900)
-zerartemporizador()
-enquanto(verdadeiro)farei{
+tarefa seperdeu{
 	se(temporizador()>800 e temp==verdadeiro)entao{
 		parar()
 		zerartemporizador()
-		enquanto(cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{
-			direita(1000)
+		enquanto(cor(3)=="BRANCO" e cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1200)farei{
+			se(ULTIMO==1)entao{
+				direita(1000)
+			} senao se (ULTIMO==2)entao{
+				esquerda(1000)
+			} senao {
+				direita(1000)
+			}
 		}
 		parar()
 		se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
 			zerartemporizador()
-			enquanto(cor(3)=="BRANCO" e cor(4)=="BRANCO" e temporizador()<3000)farei{
-				esquerda(1000)
+			enquanto(cor(3)=="BRANCO" e cor(4)=="BRANCO" e temporizador()<2400)farei{
+				se(ULTIMO==1)entao{
+					esquerda(1000)
+				} senao se (ULTIMO==2)entao{
+					direita(1000)
+				} senao {
+					esquerda(1000)
+				}
 			}
 			zerartemporizador()
 			se(cor(3)=="BRANCO" e cor(4)=="BRANCO")entao{
-				direita(1000)
-				esperar(1500)
+				se(ULTIMO==1)entao{
+					direita(1000)
+					esperar(1200)
+				} senao se (ULTIMO==2)entao{
+					esquerda(1000)
+					esperar(1200)
+				} senao {
+					direita(1000)
+					esperar(1200)
+				}
 				se(tempCont == 0)entao{
 					tras(200)
 					esperar(820)
@@ -771,6 +1000,33 @@ enquanto(verdadeiro)farei{
 		}
 	}senao {
 		resgate()
+	}
+}
+inicio
+velocidadeatuador(500)
+levantar(900)
+zerartemporizador()
+enquanto(verdadeiro)farei{
+	se(cor(1)=="VERMELHO" ou cor(2)=="VERMELHO" ou cor(3)=="VERMELHO" ou cor(4)=="VERMELHO")entao{
+		acenderled("VERMELHO")
+		se(contVermelho>1)entao{
+			se(cor(1)=="VERMELHO" ou cor(2)=="VERMELHO")entao{
+				esquerda(300)
+				esperar(800)
+			} senao se(cor(3)=="VERMELHO" ou cor(4)=="VERMELHO")entao{
+				direita(300)
+				esperar(800)
+			}
+			contVermelho = 0
+		} senao {
+			enquanto(cor(2)!="PRETO" e cor(3)!="PRETO")farei{
+				tras(200)
+			}
+			contVermelho = contVermelho + 1
+		}
+		apagarled()
+	}senao {
+		seperdeu()
 	}
 }
 fim
