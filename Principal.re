@@ -407,6 +407,8 @@ tarefa resgate{
                         parar()
                         fechar(1)
                         levantar(300)
+                        parar()
+                        esperar(100)
                         rotacionar(1000, 180)
                         alinhar()
                         enquanto(ultra(1)>40)farei{frente(300)}
@@ -417,7 +419,7 @@ tarefa resgate{
                         #trasrotacao(1000, 3)
                         girarbaixo(1000)
                         baixar(600)
-                        esperar(600)
+                        enquanto(temvitima())farei{esperar(1)}
                         levantar(600)
                         girarcima(1000)
                         # Resgatar a vitima
@@ -438,6 +440,9 @@ tarefa resgate{
                         #Achou vitimas antes de chegar no meio
                         escrevernumero(1, ultra(2))
                         vitimapos = ultra(2)
+                        tras(300)
+                        esperar(100)
+                        parar()
                         levantar(600)
                         fechar(1)
                         rotacionar(1000, 90)
@@ -449,7 +454,7 @@ tarefa resgate{
                         abrir(1)
                         baixar(600)
                         zerartemporizador()
-                        enquanto(temvitima()==falso)farei{frente(300)}
+                        enquanto(temvitima()==falso e ultra(1)>45)farei{frente(300)}
                         parar()
                         recuar = temporizador()
                         se(temvitima())entao{
@@ -457,7 +462,9 @@ tarefa resgate{
                             levantar(300)
                             parar()
                             levantar(300)
+                            parar()
                             fechar(1)
+                            esperar(300)
                             tras(300)
                             esperar(recuar)
                             rotacionar(1000, negativo(90))
@@ -497,8 +504,17 @@ tarefa resgate{
                         limparconsole()
                         escrevernumero(1, saida)
                         velocidade = 110
+                        se(triangulo==1 e ultra(2)>500)entao{saida = 2}
                         se(triangulo==1)entao{
-
+                            se(saida==2)entao{
+                                rotacionar(1000, negativo(90))
+                                enquanto(ultra(1)<280)farei{tras(300)}
+                                parar()
+                                rotacionar(1000, 180)
+                                enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
+                                parar()
+                                esperar(10000)
+                            }
                         } senao se(triangulo==2)entao{
                             se(saida==1)entao{
                                 enquanto(ultra(1)>40)farei{frente(300)}
@@ -530,6 +546,12 @@ tarefa resgate{
                                 frente(300)
                                 esperar(200)
                                 enquanto(verdadeiro)farei{rampa()}
+                            } senao se(saida==2)entao{
+                                enquanto(ultra(1)<240)farei{tras(300)}
+                                parar()
+                                rotacionar(1000, 90)
+                                frente(300)
+                                esperar(300)
                             }
                         }
                     } # Verificação se tem vitima
