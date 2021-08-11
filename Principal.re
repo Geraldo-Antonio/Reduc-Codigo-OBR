@@ -1,5 +1,4 @@
-numero sense1 = 0
-numero sense2 = 0
+numero saida = 0
 numero velocidade = 110
 booleano temp = verdadeiro
 numero tempCont = 0
@@ -334,16 +333,22 @@ tarefa resgate{
             parar()
             abrir(1)
             baixar(1000)
+            se(ultra(2)>500)entao{saida = 3}
+            se(ultra(1)>500)entao{saida = 1}
             enquanto(verdadeiro)farei{
                 parar()
                 triangulo = triangulo + 1
-                enquanto(ultra(1)>140)farei{frente(300)}
+                enquanto(ultra(1)>155)farei{frente(300)}
                 parar()
+                frente(300)
                 levantar(300)
+                parar()
                 fechar(1)
                 levantar(300)
                 enquanto(luz(3)>8 e ultra(1)>35)farei{frente(300)}
                 parar()
+                se(triangulo==1 e ultra(2)>500)entao{saida = 2}
+                senao se(triangulo==2 e ultra(2)>500)entao{saida = 3}
                 se(cor(3)=="PRETO")entao{interromper()}
                 rotacionar(1000, 40)
                 frente(300)
@@ -352,6 +357,11 @@ tarefa resgate{
                 alinhar()
                 abrir(1)
                 baixar(600)
+                zerartemporizador()
+                enquanto(temporizador()<500 e toque(1)==falso)farei{tras(300)}
+                parar()
+                se(toque(1)==falso e triangulo==1)entao{saida=1}
+                senao se(toque(1)==falso e triangulo==2)entao{saida=2}
             }
             se(temvitima())entao{
                 abrir(1)
@@ -374,7 +384,7 @@ tarefa resgate{
                     enquanto(ultra(2)<ULTRA2)farei{tras(300)}
                     parar()
                     frente(300)
-                    esperar(100)
+                    esperar(200)
                     rotacionar(1000, 90)
                     alinhar()
                     se(vitimapos<30)entao{
@@ -483,50 +493,44 @@ tarefa resgate{
                         # Resgatar a vitima
                     } senao {
                         #chegou ao meio e vai girar procurando vitimas
-                        #IR PARA A SAIDA
-                        fechar(1)
-                        levantar(600)
-                        enquanto(ultra(2)>100)farei{direita(1000)}
-                        parar()
-                        se(ultra(2)<100)entao{
-                            acenderled("VERMELHO")
-                            parar()
-                            rotacionar(1000, 95)
-                            tras(300)
-                            esperar(300)
-                            parar()
-                            abrir(1)
-                            baixar(600)
-                            zerartemporizador()
-                            enquanto(temvitima()==falso)farei{
-                                escrevernumero(1, temporizador())
+                        #IR PARA o saida = 0
+                        limparconsole()
+                        escrevernumero(1, saida)
+                        velocidade = 110
+                        se(triangulo==1)entao{
+
+                        } senao se(triangulo==2)entao{
+                            se(saida==1)entao{
+                                enquanto(ultra(1)>40)farei{frente(300)}
+                                parar()
+                                rotacionar(1000, negativo(90))
+                                alinhar()
                                 frente(300)
+                                esperar(300)
+                                enquanto(verdadeiro)farei{rampa()}
+                                parar()
+                                frente(300)
+                                esperar(200)
                             }
-                            recuar = temporizador()
-                            zerartemporizador()
-                            parar()
-                            frente(300)
-                            levantar(600)
-                            parar()
-                            fechar(1)
-                            tras(300)
-                            esperar(recuar)
-                            parar()
-                            escrevernumero(1, direcao())
-                            escrevernumero(2, graus+180)
-                            enquanto(arredondar(direcao())!=graus + 180)farei{esquerda(1000)}
-                            parar()
-                            enquanto(ultra(1)>30)farei{frente(300)}
-                            parar()
-                            rotacionar(1000, 90)
-                            enquanto(luz(3)>8)farei{frente(300)}
-                            parar()
-                            tras(300)
-                            esperar(100)
-                            baixar(600)
-                            esperar(600)
-                            levantar(600)
-                            #esperar(10000)
+                        } senao se(triangulo==3) entao{
+                            se(saida==1)entao{
+                                rotacionar(1000, negativo(90))
+                                frente(300)
+                                esperar(100)
+                                se(ultra(1)<35)entao{
+                                    enquanto(ultra(1)<35)farei{tras(300)}
+                                    parar()
+                                } senao se(ultra(1)>35)entao{
+                                    enquanto(ultra(1)>35)farei{frente(300)}
+                                    parar()
+                                }
+                                rotacionar(1000, negativo(90))
+                                enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{frente(200)}
+                                parar()
+                                frente(300)
+                                esperar(200)
+                                enquanto(verdadeiro)farei{rampa()}
+                            }
                         }
                     } # Verificação se tem vitima
                 }
