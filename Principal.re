@@ -339,8 +339,9 @@ tarefa resgate{
                 triangulo = triangulo + 1
                 enquanto(ultra(1)>140)farei{frente(300)}
                 parar()
-                levantar(600)
+                levantar(300)
                 fechar(1)
+                levantar(300)
                 enquanto(luz(3)>8 e ultra(1)>35)farei{frente(300)}
                 parar()
                 se(cor(3)=="PRETO")entao{interromper()}
@@ -372,7 +373,8 @@ tarefa resgate{
                     vitimapos = ultra(2)
                     enquanto(ultra(2)<ULTRA2)farei{tras(300)}
                     parar()
-                    trasrotacao(300, 1)
+                    frente(300)
+                    esperar(100)
                     rotacionar(1000, 90)
                     alinhar()
                     se(vitimapos<30)entao{
@@ -405,7 +407,7 @@ tarefa resgate{
                         #trasrotacao(1000, 3)
                         girarbaixo(1000)
                         baixar(600)
-                        esperar(500)
+                        esperar(600)
                         levantar(600)
                         girarcima(1000)
                         # Resgatar a vitima
@@ -418,12 +420,11 @@ tarefa resgate{
                     graus = arredondar(direcao())
                     enquanto(ultra(1)<80)farei{tras(300)}
                     parar()
-                    #abrir(1)
-                    #baixar(600)
+                    ULTRA2 = ultra(2) - 1
                     zerartemporizador()
-                    enquanto(temporizador()<1800 e temvitima()==falso e ultra(2)>100)farei{tras(300)}
+                    enquanto(temporizador()<1800 e temvitima()==falso e ultra(2)>ULTRA2)farei{tras(300)}
                     parar()
-                    se(ultra(2)<100)entao{
+                    se(ultra(2)<ULTRA2)entao{
                         #Achou vitimas antes de chegar no meio
                         escrevernumero(1, ultra(2))
                         vitimapos = ultra(2)
@@ -437,15 +438,19 @@ tarefa resgate{
                         }
                         abrir(1)
                         baixar(600)
+                        zerartemporizador()
                         enquanto(temvitima()==falso)farei{frente(300)}
                         parar()
+                        recuar = temporizador()
                         se(temvitima())entao{
                             frente(300)
                             levantar(300)
                             parar()
                             levantar(300)
                             fechar(1)
-                            rotacionar(1000, 90)
+                            tras(300)
+                            esperar(recuar)
+                            rotacionar(1000, negativo(90))
                             alinhar()
                             enquanto(ultra(1)>30)farei{frente(300)}
                             parar()
@@ -453,7 +458,7 @@ tarefa resgate{
                             enquanto(luz(3)>8)farei{frente(300)}
                             parar()
                             baixar(600)
-                            esperar(500)
+                            esperar(600)
                             levantar(600)
                             # Resgatar a vitima
                         }
@@ -472,12 +477,13 @@ tarefa resgate{
                         parar()
                         #abrir(1)
                         baixar(600)
-                        esperar(500)
+                        esperar(600)
                         #fechar(1)
                         levantar(600)
                         # Resgatar a vitima
                     } senao {
                         #chegou ao meio e vai girar procurando vitimas
+                        #IR PARA A SAIDA
                         fechar(1)
                         levantar(600)
                         enquanto(ultra(2)>100)farei{direita(1000)}
@@ -518,7 +524,7 @@ tarefa resgate{
                             tras(300)
                             esperar(100)
                             baixar(600)
-                            esperar(500)
+                            esperar(600)
                             levantar(600)
                             #esperar(10000)
                         }
