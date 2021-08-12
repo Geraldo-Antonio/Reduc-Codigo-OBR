@@ -539,7 +539,7 @@ tarefa resgate{
                                 enquanto(ultra(2)<500)farei{frente(300)}
                                 parar()
                                 tras(300)
-                                esperar(400)
+                                esperar(600)
                                 enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
                                 parar()
                                 frente(300)
