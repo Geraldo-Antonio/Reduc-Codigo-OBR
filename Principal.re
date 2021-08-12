@@ -132,13 +132,10 @@ tarefa verde{
             frente(300)
             esperar(100)
         } senao {
-            enquanto(cor(1)!="VERDE")farei{frente(100)}
-            parar()
-            enquanto(cor(2)=="BRANCO" e cor(1)=="VERDE")farei{frente(60)}
+            zerartemporizador()
+            enquanto(cor(1)!="VERDE" e temporizador()<500)farei{frente(100)}
             parar()
             frente(100)
-            esperar(50)
-            parar()
             esperar(100)
             se(cor(2)=="VERDE")entao{
                 enquanto(cor(2)=="VERDE")farei{esquerda(1000)}
@@ -182,13 +179,10 @@ tarefa verde{
             frente(300)
             esperar(100)
         } senao {
-            enquanto(cor(2)!="VERDE")farei{frente(100)}
-            parar()
-            enquanto(cor(1)=="BRANCO" e cor(2)=="VERDE")farei{frente(60)}
+            zerartemporizador()
+            enquanto(cor(2)!="VERDE" e temporizador()<500)farei{frente(100)}
             parar()
             frente(100)
-            esperar(50)
-            parar()
             esperar(100)
             se(cor(1)=="VERDE")entao{
                 enquanto(cor(1)=="VERDE")farei{direita(500)}
@@ -285,24 +279,22 @@ tarefa rampa{
     se(arredondar(inclinacao())==340 e ultra(2)>100)entao{
         escrever(1, "ELEVAÇÂO DETECTADA")
         zerartemporizador()
-        enquanto(temporizador()<1300)farei{obstaculo()}
+        enquanto(temporizador()<1500)farei{obstaculo()}
         parar()
         antigapos = arredondar(inclinacao())
         esperar(2000)
         escrever(1, "RAMPA FINALIZADA")
         se(antigapos == arredondar(inclinacao()))entao{
             escrever(2, "RAMPA")
-            enquanto(arredondar(inclinacao())!=0)farei{obstaculo() escrever(3, "CONTINUANDO RAMPA")}
+            escrever(3, "CONTINUANDO RAMPA")
+            zerartemporizador()
+            enquanto(temporizador()<2500)farei{obstaculo()}
             parar()
-            #escrever(3, "PROCURANDO DESCIDA")
-            #enquanto(arredondar(inclinacao())>10 e arredondar(inclinacao())<25)farei{obstaculo() escrever(3, "DESCENDO RAMPA")}
-            #parar()
-            #zerartemporizador()
-            #enquanto(temporizador()<1500)farei{obstaculo()}
         } senao {
             escrever(2, "GANGORRA")
         }
         zerartemporizador()
+        limparconsole()
     } senao {
         obstaculo()
     }
@@ -459,12 +451,13 @@ tarefa resgate{
                         recuar = temporizador()
                         se(temvitima())entao{
                             frente(300)
-                            levantar(300)
+                            levantar(200)
                             parar()
-                            levantar(300)
+                            levantar(400)
                             parar()
                             fechar(1)
-                            esperar(300)
+                            parar()
+                            esperar(800)
                             tras(300)
                             esperar(recuar)
                             rotacionar(1000, negativo(90))
@@ -503,6 +496,7 @@ tarefa resgate{
                         #IR PARA o saida = 0
                         limparconsole()
                         escrevernumero(1, saida)
+                        escrevernumero(2, triangulo)
                         velocidade = 110
                         se(triangulo==1 e ultra(2)>500)entao{saida = 2}
                         se(triangulo==1)entao{
@@ -514,6 +508,27 @@ tarefa resgate{
                                 enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
                                 parar()
                                 esperar(10000)
+                            } senao se(saida==3)entao{
+                                rotacionar(1000, negativo(90))
+                                se(ultra(1)<36)entao{
+                                    enquanto(ultra(1)<36)farei{tras(300)}
+                                    parar()
+                                } senao {
+                                    enquanto(ultra(1)>36)farei{frente(300)}
+                                    parar()
+                                }
+                                rotacionar(1000, negativo(90))
+                                alinhar()
+                                enquanto(ultra(2)<500)farei{frente(300)}
+                                parar()
+                                tras(300)
+                                esperar(400)
+                                enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
+                                parar()
+                                frente(300)
+                                esperar(300)
+                                parar()
+                                esperar(10000)
                             }
                         } senao se(triangulo==2)entao{
                             se(saida==1)entao{
@@ -521,12 +536,16 @@ tarefa resgate{
                                 parar()
                                 rotacionar(1000, negativo(90))
                                 alinhar()
-                                frente(300)
-                                esperar(300)
-                                enquanto(verdadeiro)farei{rampa()}
+                                enquanto(ultra(2)<500)farei{frente(300)}
+                                parar()
+                                tras(300)
+                                esperar(400)
+                                enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
                                 parar()
                                 frente(300)
                                 esperar(200)
+                                parar()
+                                esperar(10000)
                             }
                         } senao se(triangulo==3) entao{
                             se(saida==1)entao{
@@ -547,11 +566,18 @@ tarefa resgate{
                                 esperar(200)
                                 enquanto(verdadeiro)farei{rampa()}
                             } senao se(saida==2)entao{
-                                enquanto(ultra(1)<240)farei{tras(300)}
+                                escrever(3, "ASOIDPAJHSOIDA")
+                                enquanto(ultra(1)>40)farei{frente(300)}
                                 parar()
-                                rotacionar(1000, 90)
+                                rotacionar(1000, negativo(90))
                                 frente(300)
                                 esperar(300)
+                                enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
+                                parar()
+                                frente(300)
+                                esperar(200)
+                                parar()
+                                esperar(10000)
                             }
                         }
                     } # Verificação se tem vitima
