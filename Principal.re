@@ -39,7 +39,7 @@ tarefa seguelinha{
         se(cor(2)=="PRETO") entao{
             escrever(1, "DOIS PRETOS")
             frente(300)
-            esperar(150)
+            esperar(75)
             zerartemporizador()
             enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO" e temporizador()<1500)farei{esquerda(1000)}
             parar()
@@ -55,11 +55,13 @@ tarefa seguelinha{
             }
             zerartemporizador()
         } senao{
+            ULTIMO = 2
             direita(1000)
             zerartemporizador()
         }
     } senao{
         se(cor(2)=="PRETO")entao{
+            ULTIMO = 1
             esquerda(1000)
             zerartemporizador()
         } senao {
@@ -72,7 +74,7 @@ tarefa curva90{
         escrever(1, "CURVA DE 90 PARA A DIREITA")
         ULTIMO = 1
         frente(300)
-        esperar(150)
+        esperar(75)
         se(cor(1)=="VERDE" ou cor(2)=="VERDE")entao{
             escrever(2, "ACHEI VERDE AQ VEI")
             enquanto(cor(1)=="VERDE" ou cor(2)=="VERDE")farei{frente(100)}
@@ -97,7 +99,7 @@ tarefa curva90{
         escrever(1, "CURVA DE 90 PARA A ESQUERDA")
         ULTIMO = 2
         frente(300)
-        esperar(150)
+        esperar(75)
         se(cor(1)=="VERDE" ou cor(2)=="VERDE")entao{
             escrever(2, "ACHEI VERDE AQ VEI")
             enquanto(cor(1)=="VERDE" ou cor(2)=="VERDE")farei{frente(100)}
@@ -132,7 +134,7 @@ tarefa verde{
         se(cor(1)=="PRETO")entao{
             escrever(1, "VERDE FALSO")
             frente(300)
-            esperar(100)
+            esperar(300)
         } senao {
             zerartemporizador()
             enquanto(cor(1)!="VERDE" e temporizador()<300)farei{frente(100)}
@@ -169,7 +171,7 @@ tarefa verde{
         se(cor(2)=="PRETO")entao{
             escrever(1, "VERDE FALSO")
             frente(300)
-            esperar(100)
+            esperar(300)
         } senao {
             zerartemporizador()
             enquanto(cor(2)!="VERDE" e temporizador()<300)farei{frente(100)}
@@ -561,8 +563,10 @@ tarefa resgate{
                                 alinhar()
                                 enquanto(ultra(2)<500)farei{frente(300)}
                                 parar()
-                                tras(300)
-                                esperar(600)
+                                enquanto((cor(1)!="VERDE" e cor(2)!="VERDE") e (cor(1)!="CIANO" e cor(2)!="CIANO"))farei{tras(200)}
+                                parar()
+                                frente(300)
+                                esperar(200)
                                 enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
                                 parar()
                                 frente(300)
@@ -583,11 +587,18 @@ tarefa resgate{
                                     parar()
                                 }
                                 rotacionar(1000, negativo(90))
-                                enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{frente(200)}
+                                enquanto(ultra(2)<500)farei{frente(300)}
+                                parar()
+                                enquanto((cor(1)!="VERDE" e cor(2)!="VERDE") e (cor(1)!="CIANO" e cor(2)!="CIANO"))farei{tras(200)}
                                 parar()
                                 frente(300)
                                 esperar(200)
-                                enquanto(verdadeiro)farei{rampa()}
+                                enquanto(cor(1)!="VERMELHO" e cor(2)!="VERMELHO")farei{rampa()}
+                                parar()
+                                frente(300)
+                                esperar(200)
+                                parar()
+                                esperar(10000)
                             } senao se(saida==2)entao{
                                 escrever(3, "ASOIDPAJHSOIDA")
                                 enquanto(ultra(1)>40)farei{frente(300)}
@@ -651,7 +662,7 @@ tarefa seperdeu{
 				}
 				se(tempCont == 0)entao{
 					tras(110)
-					esperar(1200)
+					esperar(1500)
 					tempCont = tempCont + 1
 					parar()
 				}
@@ -668,17 +679,17 @@ levantar(900)
 zerartemporizador()
 enquanto(verdadeiro)farei{
     se(cor(1)=="VERMELHO")entao{
-        escrever(1, "achou vermelho")
+        escrever(1, "achou vermelho1")
         parar()
         zerartemporizador()
-        enquanto(cor(2)=="BRANCO" e temporizador()<800)farei{esquerda(1000)}
+        enquanto(cor(2)=="BRANCO" e temporizador()<1200 ou cor(2) == "VERMELHO" e temporizador() < 1200)farei{esquerda(1000)}
         parar()
         zerartemporizador()
     } senao se(cor(2)=="VERMELHO")entao{
-        escrever(1, "achou vermelho")
+        escrever(1, "achou vermelho2")
         parar()
         zerartemporizador()
-        enquanto(cor(1)=="BRANCO" e temporizador()<800)farei{direita(1000)}
+        enquanto(cor(1)=="BRANCO" e temporizador()<1200)farei{direita(1000)}
         parar()
         zerartemporizador()
     } senao {
