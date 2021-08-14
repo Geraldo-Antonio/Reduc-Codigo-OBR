@@ -37,30 +37,20 @@ tarefa alinhar {
 tarefa seguelinha{
     se(cor(1)=="PRETO")entao{
         se(cor(2)=="PRETO") entao{
-            parar()
-            esquerda(1000)
+            escrever(1, "DOIS PRETOS")
+            frente(300)
             esperar(150)
-            se(cor(2)=="BRANCO")entao{
-                frente(300)
-                esperar(150)
+            zerartemporizador()
+            enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO" e temporizador()<1500)farei{esquerda(1000)}
+            parar()
+            se(cor(2)=="BRANCO" e cor(1)=="BRANCO")entao{
                 zerartemporizador()
-                enquanto(cor(1)=="BRANCO" e temporizador()<1500)farei{direita(1000)}
+                enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<3000)farei{direita(1000)}
                 parar()
-                se(cor(1)=="BRANCO")entao{
-                    enquanto(cor(2)=="BRANCO")farei{esquerda(1000)}
-                    parar()
+                se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
                     zerartemporizador()
-                }
-            } senao se(cor(2)=="PRETO")entao{
-                frente(300)
-                esperar(150)
-                zerartemporizador()
-                enquanto(cor(1)=="BRANCO" e temporizador()<1500)farei{esquerda(1000)}
-                parar()
-                se(cor(1)=="BRANCO")entao{
-                    enquanto(cor(2)=="BRANCO")farei{direita(1000)}
+                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{esquerda(1000)}
                     parar()
-                    zerartemporizador()
                 }
             }
             zerartemporizador()
@@ -92,9 +82,15 @@ tarefa curva90{
         enquanto(cor(2)=="BRANCO" e temporizador()<2500)farei{direita(1000)}
         parar()
         se(cor(2)=="BRANCO")entao{
-            enquanto(cor(1)=="BRANCO")farei{esquerda(1000)}
-            parar()
             zerartemporizador()
+            enquanto(cor(1)=="BRANCO" e temporizador()<5000)farei{esquerda(1000)}
+            parar()
+            se(cor(1)=="BRANCO")entao{
+                direita(1000)
+                esperar(2500)
+                tras(300)
+                esperar(100)
+            }
         }
         zerartemporizador()
     } senao se(luz(2)<2) entao{
@@ -111,9 +107,15 @@ tarefa curva90{
         enquanto(cor(1)=="BRANCO" e temporizador()<2500)farei{esquerda(1000)}
         parar()
         se(cor(1)=="BRANCO")entao{
-            enquanto(cor(2)=="BRANCO")farei{direita(1000)}
-            parar()
             zerartemporizador()
+            enquanto(cor(2)=="BRANCO" e temporizador()<5000)farei{direita(1000)}
+            parar()
+            se(cor(2)=="BRANCO")entao{
+                esquerda(1000)
+                esperar(2500)
+                tras(300)
+                esperar(100)
+            }
         }
         zerartemporizador()
     } senao{
@@ -133,27 +135,17 @@ tarefa verde{
             esperar(100)
         } senao {
             zerartemporizador()
-            enquanto(cor(1)!="VERDE" e temporizador()<500)farei{frente(100)}
+            enquanto(cor(1)!="VERDE" e temporizador()<300)farei{frente(100)}
             parar()
-            frente(100)
-            esperar(100)
+            esperar(500)
             se(cor(2)=="VERDE")entao{
-                enquanto(cor(2)=="VERDE")farei{esquerda(1000)}
+                escrever(1, "DOIS VERDE")
+                rotacionar(1000, negativo(90))
+                enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO")farei{esquerda(1000)}
                 parar()
-                se(cor(2)=="PRETO")entao{
-                    frente(300)
-                    esperar(300)
-                    direita(1000)
-                    esperar(600)
-                    enquanto(cor(2)=="BRANCO")farei{direita(1000)}
-                    parar()
-                } senao {
-                    rotacionar(1000, negativo(90))
-                    enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO")farei{esquerda(1000)}
-                }
             } senao {
                 frente(300)
-                esperar(300)
+                esperar(200)
                 direita(1000)
                 esperar(600)
                 zerartemporizador()
@@ -180,27 +172,17 @@ tarefa verde{
             esperar(100)
         } senao {
             zerartemporizador()
-            enquanto(cor(2)!="VERDE" e temporizador()<500)farei{frente(100)}
+            enquanto(cor(2)!="VERDE" e temporizador()<300)farei{frente(100)}
             parar()
-            frente(100)
-            esperar(100)
+            esperar(500)
             se(cor(1)=="VERDE")entao{
-                enquanto(cor(1)=="VERDE")farei{direita(500)}
+                escrever(1, "DOIS VERDE")
+                rotacionar(1000, 90)
+                enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO")farei{direita(1000)}
                 parar()
-                se(cor(1)=="PRETO")entao{
-                    frente(300)
-                    esperar(300)
-                    esquerda(1000)
-                    esperar(600)
-                    enquanto(cor(1)=="BRANCO")farei{esquerda(1000)}
-                    parar()
-                } senao {
-                    rotacionar(1000, 90)
-                    enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO")farei{direita(1000)}
-                }
             } senao {
                 frente(300)
-                esperar(300)
+                esperar(200)
                 esquerda(1000)
                 esperar(600)
                 zerartemporizador()
@@ -279,7 +261,7 @@ tarefa rampa{
     se(arredondar(inclinacao())==340 e ultra(2)>100)entao{
         escrever(1, "ELEVAÇÂO DETECTADA")
         zerartemporizador()
-        enquanto(temporizador()<1500)farei{obstaculo()}
+        enquanto(arredondar(inclinacao())<345)farei{obstaculo()}
         parar()
         antigapos = arredondar(inclinacao())
         esperar(2000)
@@ -290,6 +272,8 @@ tarefa rampa{
             zerartemporizador()
             enquanto(temporizador()<2500)farei{obstaculo()}
             parar()
+            frente(300)
+            esperar(100)
         } senao {
             escrever(2, "GANGORRA")
         }
@@ -303,15 +287,18 @@ tarefa resgate{
     se((inclinacao()>300 e inclinacao()<345) e ultra(2)<40)entao{
         parar()
         acenderled("VERDE")
+        escrever(1, "POSSIVEL RESGATE")
         zerartemporizador()
         enquanto(temporizador()<500)farei{
             rampa()
         }
         se((inclinacao()>300 e inclinacao()<345) e ultra(2)<40)entao{
+            escrever(1, "RESGATE CONFIRMADO, SUBINDO RAMPA")
             velocidade = 200
             enquanto(inclinacao()!=0 e ultra(2)<40)farei{
                 seguelinha()
             }
+            escrever(1, "RAMPA COMPLETA")
             frente(300)
             esperar(300)
             alinhar()
@@ -327,6 +314,7 @@ tarefa resgate{
             baixar(1000)
             se(ultra(2)>500)entao{saida = 3}
             se(ultra(1)>500)entao{saida = 1}
+            escrever(1, "COMEÇAR A PROCURAR TRIANGULO")
             enquanto(verdadeiro)farei{
                 parar()
                 triangulo = triangulo + 1
@@ -355,6 +343,7 @@ tarefa resgate{
                 se(toque(1)==falso e triangulo==1)entao{saida=1}
                 senao se(toque(1)==falso e triangulo==2)entao{saida=2}
             }
+            escrever(1, "TRIANGULO ENCONTRADO")
             se(temvitima())entao{
                 abrir(1)
                 baixar(600)
@@ -364,14 +353,17 @@ tarefa resgate{
             }
             enquanto(verdadeiro)farei{
                 zerartemporizador()
+                escrever(1, "PROCURANDO VITIMAS")
                 # Vai para tras apos achar o trinagulo e procura vitimas
                 se(ultra(2)>=230)entao{
                     ULTRA2 = ultra(2) - 1
                 } senao { ULTRA2 = 230}
+                zerartemporizador()
                 enquanto(temporizador()<1800 e ultra(2)>ULTRA2 e toque(1)==falso)farei{tras(300)}
                 parar()
+                escrever(1, "VITIMA ENCONTRADA")
                 se(ultra(2)<ULTRA2)entao{
-                    escrevernumero(1, ultra(2))
+                    #escrevernumero(1, ultra(2))
                     vitimapos = ultra(2)
                     enquanto(ultra(2)<ULTRA2)farei{tras(300)}
                     parar()
@@ -387,13 +379,16 @@ tarefa resgate{
                     }
                     abrir(1)
                     baixar(600)
+                    escrever(1, "INDO ATRÁS DA VITIMA")
                     enquanto(temvitima()==falso e ultra(1)>45)farei{frente(300)}
                     parar()
                     se(ultra(1)<45)entao{
+                        escrever(1, "PAREDE")
                         fechar(1)
                         levantar(600)
                     }
                     se(temvitima())entao{
+                        escrever(1, "FAZENDO RESGATE DA VITIMA")
                         frente(300)
                         levantar(300)
                         parar()
@@ -419,6 +414,7 @@ tarefa resgate{
                 } senao {
                     #trasrotacao(1000, 30)
                     #Foi para tras e não achou nenhuma vitima então vai em direção do meio da arena e no caminha procura vitimas
+                    escrever(1, "NENHUMA VITIMA ENCONTRADA PROCURAR DO OUTRO LADO")
                     rotacionar(1000, negativo(90))
                     alinhar()
                     graus = arredondar(direcao())
@@ -430,7 +426,8 @@ tarefa resgate{
                     parar()
                     se(ultra(2)<ULTRA2)entao{
                         #Achou vitimas antes de chegar no meio
-                        escrevernumero(1, ultra(2))
+                        escrever(1, "VITIMA ENCONTRADA")
+                        #escrevernumero(1, ultra(2))
                         vitimapos = ultra(2)
                         tras(300)
                         esperar(100)
@@ -439,17 +436,20 @@ tarefa resgate{
                         fechar(1)
                         rotacionar(1000, 90)
                         alinhar()
-                        se(vitimapos<30)entao{
-                            tras(300)
-                            esperar(300)
-                        }
+                        #se(vitimapos<30)entao{
+                            #tras(300)
+                            #esperar(300)
+                        #}
                         abrir(1)
                         baixar(600)
+                        escrever(1, "INDO PARA FRENTE ATÈ CHEGAR NA VITIMA")
                         zerartemporizador()
                         enquanto(temvitima()==falso e ultra(1)>45)farei{frente(300)}
                         parar()
+                        escrever(1, "VERIFICANDO SE VITIMA FOI PEGA")
                         recuar = temporizador()
                         se(temvitima())entao{
+                            escrever(1, "LEVANDO A VITIMA ATÈ O TRIANGULO")
                             frente(300)
                             levantar(200)
                             parar()
@@ -457,7 +457,7 @@ tarefa resgate{
                             parar()
                             fechar(1)
                             parar()
-                            esperar(800)
+                            esperar(1200)
                             tras(300)
                             esperar(recuar)
                             rotacionar(1000, negativo(90))
@@ -494,6 +494,7 @@ tarefa resgate{
                     } senao {
                         #chegou ao meio e vai girar procurando vitimas
                         #IR PARA o saida = 0
+                        escrever(1, "NENHUMA VITIMA ECONTRADA INDO PARA A SAIDA")
                         limparconsole()
                         escrevernumero(1, saida)
                         escrevernumero(2, triangulo)
@@ -590,10 +591,10 @@ tarefa resgate{
 }
 
 tarefa seperdeu{
-    se(temporizador()>800 e temp==verdadeiro)entao{
+    se(temporizador()>1200 e temp==verdadeiro)entao{
 		parar()
 		zerartemporizador()
-		enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1200)farei{
+		enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1300)farei{
 			se(ULTIMO==1)entao{
 				direita(1000)
 			} senao se (ULTIMO==2)entao{
@@ -605,7 +606,7 @@ tarefa seperdeu{
 		parar()
 		se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
 			zerartemporizador()
-			enquanto(cor(2)=="BRANCO" e temporizador()<2400)farei{
+			enquanto(cor(2)=="BRANCO" e temporizador()<2600)farei{
 				se(ULTIMO==1)entao{
 					esquerda(1000)
 				} senao se (ULTIMO==2)entao{
@@ -618,17 +619,17 @@ tarefa seperdeu{
 			se(cor(2)=="BRANCO")entao{
 				se(ULTIMO==1)entao{
 					direita(1000)
-					esperar(1200)
+					esperar(1300)
 				} senao se (ULTIMO==2)entao{
 					esquerda(1000)
-					esperar(1200)
+					esperar(1300)
 				} senao {
 					direita(1000)
-					esperar(1200)
+					esperar(1300)
 				}
 				se(tempCont == 0)entao{
-					tras(200)
-					esperar(820)
+					tras(110)
+					esperar(1200)
 					tempCont = tempCont + 1
 					parar()
 				}
@@ -644,6 +645,22 @@ velocidadeatuador(150)
 levantar(900)
 zerartemporizador()
 enquanto(verdadeiro)farei{
-    seperdeu()
+    se(cor(1)=="VERMELHO")entao{
+        escrever(1, "achou vermelho")
+        parar()
+        zerartemporizador()
+        enquanto(cor(2)=="BRANCO" e temporizador()<800)farei{esquerda(1000)}
+        parar()
+        zerartemporizador()
+    } senao se(cor(2)=="VERNELHO")entao{
+        escrever(1, "achou vermelho")
+        parar()
+        zerartemporizador()
+        enquanto(cor(1)=="BRANCO" e temporizador()<800)farei{direita(1000)}
+        parar()
+        zerartemporizador()
+    } senao {
+        seperdeu()
+    }
 }
 fim
