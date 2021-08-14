@@ -10,24 +10,24 @@ numero vitimapos = 0
 numero antigapos = 0
 numero ULTRA2 = 0
 tarefa alinhar {
-    escrevernumero(2, direcao())
+    #escrevernumero(2, direcao())
 	se(direcao()>230 e direcao()<300)entao{
-	    escrever(1, "270")
+	    #escrever(1, "270")
 	    rotacionar(1000, 5)
 		enquanto(arredondar(direcao())!=270)farei{esquerda(500)}
 		parar()
 	} senao se(direcao()>300 ou direcao()<40)entao{
-		escrever(1, "0")
+		#escrever(1, "0")
 		rotacionar(1000, 5)
 		enquanto(arredondar(direcao())!=0)farei{esquerda(500)}
 		parar()
 	} senao se(direcao()>40 e direcao()<130)entao{
-		escrever(1, "90")
+		#escrever(1, "90")
 		rotacionar(1000, 5)
 		enquanto(arredondar(direcao())!=90)farei{esquerda(500)}
 		parar()
 	} senao se(direcao()>130 e direcao()<230)entao{
-		escrever(1, "180")
+		#escrever(1, "180")
 		rotacionar(1000, 5)
 		enquanto(arredondar(direcao())!=180)farei{esquerda(500)}
 		parar()
@@ -295,7 +295,7 @@ tarefa resgate{
         se((inclinacao()>300 e inclinacao()<345) e ultra(2)<40)entao{
             escrever(1, "RESGATE CONFIRMADO, SUBINDO RAMPA")
             velocidade = 200
-            enquanto(inclinacao()!=0 e ultra(2)<40)farei{
+            enquanto(arredondar(inclinacao())!=0 e ultra(2)<70)farei{
                 seguelinha()
             }
             escrever(1, "RAMPA COMPLETA")
@@ -338,18 +338,19 @@ tarefa resgate{
                 abrir(1)
                 baixar(600)
                 zerartemporizador()
-                enquanto(temporizador()<500 e toque(1)==falso)farei{tras(300)}
+                enquanto(temporizador()<400 e toque(1)==falso)farei{tras(300)}
                 parar()
                 se(toque(1)==falso e triangulo==1)entao{saida=1}
                 senao se(toque(1)==falso e triangulo==2)entao{saida=2}
             }
             escrever(1, "TRIANGULO ENCONTRADO")
-            se(temvitima())entao{
-                abrir(1)
+            se(temvitima()==verdadeiro)entao{
+                parar()
+                girarbaixo(1000)
                 baixar(600)
-                esperar(300)
-                fechar(1)
+                enquanto(temvitima())farei{esperar(1)}
                 levantar(600)
+                girarcima(1000)
             }
             enquanto(verdadeiro)farei{
                 zerartemporizador()
@@ -365,6 +366,7 @@ tarefa resgate{
                 se(ultra(2)<ULTRA2)entao{
                     #escrevernumero(1, ultra(2))
                     vitimapos = ultra(2)
+                    escrevernumero(3, vitimapos)
                     enquanto(ultra(2)<ULTRA2)farei{tras(300)}
                     parar()
                     frente(300)
@@ -395,24 +397,33 @@ tarefa resgate{
                         fechar(1)
                         levantar(300)
                         parar()
-                        esperar(100)
+                        esperar(1000)
                         rotacionar(1000, 180)
                         alinhar()
-                        enquanto(ultra(1)>40)farei{frente(300)}
+                        enquanto(ultra(1)>20)farei{frente(300)}
                         parar()
                         rotacionar(1000, 90)
+                        alinhar()
                         enquanto(luz(3)>8)farei{frente(300)}
                         parar()
-                        #trasrotacao(1000, 3)
+                        #tras(300)
+                        #esperar(200)
+                        parar()
+                        abrir(1)
                         girarbaixo(1000)
                         baixar(600)
                         enquanto(temvitima())farei{esperar(1)}
                         levantar(600)
                         girarcima(1000)
+                        fechar(1)
                         # Resgatar a vitima
+                    } senao {
+                        enquanto(toque(1)==falso)farei{tras(300)}
+                        parar()
+                        rotacionar(1000, negativo(90))
+                        alinhar()
                     }
                 } senao {
-                    #trasrotacao(1000, 30)
                     #Foi para tras e não achou nenhuma vitima então vai em direção do meio da arena e no caminha procura vitimas
                     escrever(1, "NENHUMA VITIMA ENCONTRADA PROCURAR DO OUTRO LADO")
                     rotacionar(1000, negativo(90))
@@ -449,28 +460,39 @@ tarefa resgate{
                         escrever(1, "VERIFICANDO SE VITIMA FOI PEGA")
                         recuar = temporizador()
                         se(temvitima())entao{
-                            escrever(1, "LEVANDO A VITIMA ATÈ O TRIANGULO")
                             frente(300)
-                            levantar(200)
-                            parar()
-                            levantar(400)
+                            levantar(300)
                             parar()
                             fechar(1)
+                            levantar(300)
                             parar()
-                            esperar(1200)
+                            esperar(1000)
+                            escrever(1, "LEVANDO A VITIMA ATÈ O TRIANGULO")
+                            tras(300)
+                            esperar(recuar / 2)
+                            rotacionar(1000, negativo(90))
+                            alinhar()
+                            enquanto(ultra(1)>20)farei{frente(300)}
+                            parar()
+                            rotacionar(1000, 90)
+                            alinhar()
+                            enquanto(luz(3)>8)farei{frente(300)}
+                            parar()
+                            #tras(300)
+                            #esperar(200)
+                            parar()
+                            abrir(1)
+                            girarbaixo(1000)
+                            baixar(600)
+                            enquanto(temvitima())farei{esperar(1)}
+                            levantar(600)
+                            girarcima(1000)
+                            fechar(1)
+                            # Resgatar a vitima
+                        } senao {
                             tras(300)
                             esperar(recuar)
                             rotacionar(1000, negativo(90))
-                            alinhar()
-                            enquanto(ultra(1)>30)farei{frente(300)}
-                            parar()
-                            rotacionar(1000, 90)
-                            enquanto(luz(3)>8)farei{frente(300)}
-                            parar()
-                            baixar(600)
-                            esperar(600)
-                            levantar(600)
-                            # Resgatar a vitima
                         }
                     }senao se(temvitima()==verdadeiro)entao{
                         #achou vitimas com a garra enquanto ia
@@ -496,8 +518,8 @@ tarefa resgate{
                         #IR PARA o saida = 0
                         escrever(1, "NENHUMA VITIMA ECONTRADA INDO PARA A SAIDA")
                         limparconsole()
-                        escrevernumero(1, saida)
-                        escrevernumero(2, triangulo)
+                        #escrevernumero(1, saida)
+                        #escrevernumero(2, triangulo)
                         velocidade = 110
                         se(triangulo==1 e ultra(2)>500)entao{saida = 2}
                         se(triangulo==1)entao{
@@ -652,7 +674,7 @@ enquanto(verdadeiro)farei{
         enquanto(cor(2)=="BRANCO" e temporizador()<800)farei{esquerda(1000)}
         parar()
         zerartemporizador()
-    } senao se(cor(2)=="VERNELHO")entao{
+    } senao se(cor(2)=="VERMELHO")entao{
         escrever(1, "achou vermelho")
         parar()
         zerartemporizador()
