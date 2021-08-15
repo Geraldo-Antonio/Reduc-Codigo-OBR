@@ -276,11 +276,9 @@ tarefa rampa{
             parar()
             frente(300)
             esperar(100)
-        } senao {
-            escrever(2, "GANGORRA")
         }
         zerartemporizador()
-        limparconsole()
+        #limparconsole()
     } senao {
         obstaculo()
     }
