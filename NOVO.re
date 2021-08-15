@@ -38,6 +38,7 @@ tarefa seguelinha{
     se(cor(1)=="PRETO")entao{
         se(cor(2)=="PRETO") entao{
             escrever(1, "DOIS PRETOS")
+            escrevernumero(2, ULTIMO)
             frente(300)
             esperar(75)
             zerartemporizador()
@@ -65,65 +66,11 @@ tarefa seguelinha{
             esquerda(1000)
             zerartemporizador()
         } senao {
-            frenterotacao(velocidade, 0.1)
+            frente(150)
         }
     }
 }
-tarefa curva90{
-    se(luz(1)<2)entao{
-        escrever(1, "CURVA DE 90 PARA A DIREITA")
-        ULTIMO = 1
-        frente(300)
-        esperar(75)
-        se(cor(1)=="VERDE" ou cor(2)=="VERDE")entao{
-            escrever(2, "ACHEI VERDE AQ VEI")
-            enquanto(cor(1)=="VERDE" ou cor(2)=="VERDE")farei{frente(100)}
-            parar()
-        }
-        zerartemporizador()
-        enquanto(cor(2)=="BRANCO" e temporizador()<2500)farei{direita(1000)}
-        parar()
-        se(cor(2)=="BRANCO")entao{
-            zerartemporizador()
-            enquanto(cor(1)=="BRANCO" e temporizador()<5000)farei{esquerda(1000)}
-            parar()
-            se(cor(1)=="BRANCO")entao{
-                direita(1000)
-                esperar(2500)
-                tras(300)
-                esperar(100)
-            }
-        }
-        zerartemporizador()
-    } senao se(luz(2)<2) entao{
-        escrever(1, "CURVA DE 90 PARA A ESQUERDA")
-        ULTIMO = 2
-        frente(300)
-        esperar(75)
-        se(cor(1)=="VERDE" ou cor(2)=="VERDE")entao{
-            escrever(2, "ACHEI VERDE AQ VEI")
-            enquanto(cor(1)=="VERDE" ou cor(2)=="VERDE")farei{frente(100)}
-            parar()
-        }
-        zerartemporizador()
-        enquanto(cor(1)=="BRANCO" e temporizador()<2500)farei{esquerda(1000)}
-        parar()
-        se(cor(1)=="BRANCO")entao{
-            zerartemporizador()
-            enquanto(cor(2)=="BRANCO" e temporizador()<5000)farei{direita(1000)}
-            parar()
-            se(cor(2)=="BRANCO")entao{
-                esquerda(1000)
-                esperar(2500)
-                tras(300)
-                esperar(100)
-            }
-        }
-        zerartemporizador()
-    } senao{
-        seguelinha()
-    }
-}
+
 tarefa verde{
 	se(cor(1)=="VERDE")entao{
 		parar()
@@ -200,7 +147,7 @@ tarefa verde{
             zerartemporizador()
         }
 	} senao {
-		curva90()
+		seguelinha()
 	}
 }
 
