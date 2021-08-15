@@ -9,6 +9,7 @@ numero graus = 0
 numero vitimapos = 0
 numero antigapos = 0
 numero ULTRA2 = 0
+booleano V2 = falso
 tarefa alinhar {
     #escrevernumero(2, direcao())
 	se(direcao()>230 e direcao()<300)entao{
@@ -40,17 +41,22 @@ tarefa seguelinha{
             escrever(1, "DOIS PRETOS")
             escrevernumero(2, ULTIMO)
             frente(300)
-            esperar(75)
-            zerartemporizador()
-            enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO" e temporizador()<1500)farei{esquerda(1000)}
-            parar()
-            se(cor(2)=="BRANCO" e cor(1)=="BRANCO")entao{
+            esperar(150)
+            se(cor(1)=="VERDE" ou cor(2)=="VERDE")entao{frente(150) esperar(300)}
+            se(ULTIMO == 2)entao{
                 zerartemporizador()
-                enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<3000)farei{direita(1000)}
+                enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{direita(1000)}
                 parar()
                 se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
-                    zerartemporizador()
-                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{esquerda(1000)}
+                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{esquerda(1000)}
+                    parar()
+                }
+            } senao se(ULTIMO == 1)entao{
+                zerartemporizador()
+                enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{esquerda(1000)}
+                parar()
+                se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
+                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{direita(1000)}
                     parar()
                 }
             }
@@ -75,77 +81,49 @@ tarefa verde{
 	se(cor(1)=="VERDE")entao{
 		parar()
         escrever(1, "VERDE PARA A DIREITA")
-        enquanto(cor(1)=="VERDE")farei{tras(100)}
-        parar()
-        esperar(100)
-        se(cor(1)=="PRETO")entao{
-            escrever(1, "VERDE FALSO")
-            frente(300)
-            esperar(300)
-        } senao {
-            zerartemporizador()
-            enquanto(cor(1)!="VERDE" e temporizador()<300)farei{frente(100)}
-            parar()
-            esperar(500)
-            se(cor(2)=="VERDE")entao{
-                escrever(1, "DOIS VERDE")
-                rotacionar(1000, negativo(90))
-                enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO")farei{esquerda(1000)}
-                parar()
-            } senao {
-                frente(300)
-                esperar(200)
-                direita(1000)
-                esperar(600)
-                zerartemporizador()
-                enquanto(cor(2)=="BRANCO" e temporizador()<2500)farei{direita(1000)}
-                parar()
-                se(cor(2)=="BRANCO")entao{
-                    tras(300)
-                    esperar(70)
-                    enquanto(cor(1)=="BRANCO")farei{esquerda(1000)}
-                    parar()
-                }
-            }
-            zerartemporizador()
+        enquanto(cor(1)=="VERDE")farei{
+            se(cor(2)=="VERDE")entao{V2 = verdadeiro}
+            frente(150)
         }
+        parar()
+        se(V2 == falso)entao{
+            frente(150)
+            esperar(300)
+            direita(1000)
+            esperar(600)
+            enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{direita(1000)}
+            parar()
+        } senao {
+            frente(150)
+            esperar(300)
+            rotacionar(1000, 90)
+            enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{direita(1000)}
+            parar()
+        }
+        V2 = falso
 	} senao se(cor(2)=="VERDE")entao{
-		parar()
-        escrever(1, "VERDE PARA A ESQUERDA")
-        enquanto(cor(2)=="VERDE")farei{tras(100)}
         parar()
-        esperar(100)
-        se(cor(2)=="PRETO")entao{
-            escrever(1, "VERDE FALSO")
-            frente(300)
-            esperar(300)
-        } senao {
-            zerartemporizador()
-            enquanto(cor(2)!="VERDE" e temporizador()<300)farei{frente(100)}
-            parar()
-            esperar(500)
-            se(cor(1)=="VERDE")entao{
-                escrever(1, "DOIS VERDE")
-                rotacionar(1000, 90)
-                enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO")farei{direita(1000)}
-                parar()
-            } senao {
-                frente(300)
-                esperar(200)
-                esquerda(1000)
-                esperar(600)
-                zerartemporizador()
-                enquanto(cor(1)=="BRANCO" e temporizador()<2500)farei{esquerda(1000)}
-                parar()
-                se(cor(1)=="BRANCO")entao{
-                    tras(300)
-                    esperar(70)
-                    enquanto(cor(2)=="BRANCO")farei{direita(1000)}
-                    parar()
-                }
-            }
-            zerartemporizador()
+		escrever(1, "VERDE PARA A ESQUERDA")
+        enquanto(cor(2)=="VERDE")farei{
+            se(cor(1)=="VERDE")entao{V2 = verdadeiro}
+            frente(150)
         }
+        parar()
+        se(V2 == falso)entao{
+            frente(150)
+            esperar(300)
+            esquerda(1000)
+            esperar(600)
+            enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{esquerda(1000)}
+            parar()
+        } senao {
+            frente(150)
+            esperar(300)
+            rotacionar(1000, 90)
+            enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{direita(1000)}
+            parar()
+        }
+        V2 = falso
 	} senao {
 		seguelinha()
 	}
@@ -468,6 +446,7 @@ tarefa resgate{
                         #escrevernumero(1, saida)
                         #escrevernumero(2, triangulo)
                         velocidade = 110
+                        temp = verdadeiro
                         se(triangulo==1 e ultra(2)>500)entao{saida = 2}
                         se(triangulo==1)entao{
                             se(saida==2)entao{
@@ -606,8 +585,8 @@ tarefa seperdeu{
 					esperar(1300)
 				}
 				se(tempCont == 0)entao{
-					tras(110)
-					esperar(1500)
+					tras(150)
+					esperar(1600)
 					tempCont = tempCont + 1
 					parar()
 				}
@@ -623,22 +602,6 @@ velocidadeatuador(150)
 levantar(900)
 zerartemporizador()
 enquanto(verdadeiro)farei{
-    se(cor(1)=="VERMELHO")entao{
-        escrever(1, "achou vermelho1")
-        parar()
-        zerartemporizador()
-        enquanto(cor(2)=="BRANCO" e temporizador()<1200 ou cor(2) == "VERMELHO" e temporizador() < 1200)farei{esquerda(1000)}
-        parar()
-        zerartemporizador()
-    } senao se(cor(2)=="VERMELHO")entao{
-        escrever(1, "achou vermelho2")
-        parar()
-        zerartemporizador()
-        enquanto(cor(1)=="BRANCO" e temporizador()<1200)farei{direita(1000)}
-        parar()
-        zerartemporizador()
-    } senao {
-        seperdeu()
-    }
+    seperdeu()
 }
 fim
