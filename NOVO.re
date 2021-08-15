@@ -36,8 +36,8 @@ tarefa alinhar {
 }
 
 tarefa seguelinha{
-    se(cor(1)=="PRETO")entao{
-        se(cor(2)=="PRETO") entao{
+    se(luz(1)<50)entao{
+        se(luz(2)<50) entao{
             escrever(1, "DOIS PRETOS")
             escrevernumero(2, ULTIMO)
             frente(300)
@@ -67,7 +67,7 @@ tarefa seguelinha{
             zerartemporizador()
         }
     } senao{
-        se(cor(2)=="PRETO")entao{
+        se(luz(2)<50)entao{
             ULTIMO = 1
             esquerda(1000)
             zerartemporizador()
@@ -602,6 +602,11 @@ velocidadeatuador(150)
 levantar(900)
 zerartemporizador()
 enquanto(verdadeiro)farei{
-    seperdeu()
+    se(cor(1)=="VERMELHO" ou cor(2)=="VERMELHO")entao{
+        enquanto(cor(1)!="PRETO" e cor(2)!="PRETO")farei{tras(200)}
+        parar()
+    } senao {
+        seperdeu()
+    }
 }
 fim
