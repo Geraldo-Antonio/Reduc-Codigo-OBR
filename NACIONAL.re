@@ -310,9 +310,9 @@ tarefa resgatarvitima{
             esperar(300)
         }
         escrever(1, "INDO ATRÁS DA VITIMA")
-        escrevernumero(1, (ULTRA2 * 1200 / 100) - 900)
+        escrevernumero(1, (ULTRA2 * 800 / 100) - 900)
         frente(300)
-        esperar((ULTRA2 * 1000 / 100))
+        esperar((ULTRA2 * 700 / 100))
         parar()
         abrir(1)
         baixar(600)
@@ -410,15 +410,16 @@ tarefa resgate{
                     parar()
                     se(ultra(1)<70)entao{
                         se(ultra(2)<100)entao{
-                            rotacionar(1000, negativo(90))
+                            rotacionar(1000, negativo(45))
+                            enquanto(luz(3)>8)farei{frente(300)}
+                            parar()
+                            rotacionar(1000, 45)
                         } senao {
-                            rotacionar(1000, 90)
+                            rotacionar(1000, 45)
+                            enquanto(luz(3)>8)farei{frente(300)}
+                            parar()   
+                            rotacionar(1000, negativo(45))
                         }
-                        frente(300)
-                        esperar(700)
-                        rotacionar(1000, negativo(90))
-                        enquanto(luz(3)>8)farei{frente(300)}
-                        parar()
                     }
                     depositar()
                     rotacionar(1000, 90)
