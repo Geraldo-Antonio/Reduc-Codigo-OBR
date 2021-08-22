@@ -275,6 +275,7 @@ tarefa procurarV {
         }
         frente(300)
     }
+    ULTRA2 = ultra(2)
     parar()
     escrever(1, "VITIMA ENCONTRADA")
     fechar(1)
@@ -309,8 +310,10 @@ tarefa resgatarvitima{
             esperar(300)
         }
         escrever(1, "INDO ATRÁS DA VITIMA")
+        escrevernumero(1, (ULTRA2 * 1200 / 100) - 900)
         frente(300)
-        esperar(ULTRA2 / 4)
+        esperar((ULTRA2 * 1000 / 100))
+        parar()
         abrir(1)
         baixar(600)
         zerartemporizador()
@@ -379,6 +382,7 @@ tarefa resgate{
             se(ppos>2)entao{
                 ppos = 2
             }
+            escrevernumero(4, ppos)
             procurarV()
             resgatarvitima()
             se(triangulo==3)entao{
@@ -402,10 +406,14 @@ tarefa resgate{
                         }
                         rotacionar(1000, 135)
                     }
-                    enquanto(luz(3)>8 e ultra(1)>50)farei{frente(300)}
+                    enquanto(luz(3)>8 e ultra(1)>70)farei{frente(300)}
                     parar()
-                    se(ultra(1)<50)entao{
-                        rotacionar(1000, 90)
+                    se(ultra(1)<70)entao{
+                        se(ultra(2)<100)entao{
+                            rotacionar(1000, negativo(90))
+                        } senao {
+                            rotacionar(1000, 90)
+                        }
                         frente(300)
                         esperar(700)
                         rotacionar(1000, negativo(90))
