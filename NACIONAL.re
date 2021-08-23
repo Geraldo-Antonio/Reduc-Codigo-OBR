@@ -343,7 +343,7 @@ tarefa resgatarvitima{
     }
 }
 tarefa resgate{
-    se((arredondar(luz(1))==85 ou arredondar(luz(1))==59) e (arredondar(luz(2))==59 ou arredondar(luz(2))==85) e (arredondar(luz(1))==64 ou arredondar(luz(2))==64))entao{
+    se((arredondar(luz(1))==85 ou arredondar(luz(1))==59) e (arredondar(luz(2))==59 ou arredondar(luz(2))==85))entao{
         parar()
         acenderled("VERDE")
         escrever(1, "RESGATE CONFIRMADO")
