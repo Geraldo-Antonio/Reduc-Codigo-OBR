@@ -275,7 +275,9 @@ tarefa procurarV {
         }
         frente(300)
     }
+    parar()
     ULTRA2 = ultra(2)
+    enquanto(ultra(2)<ULTRA2)farei{frente(300)}
     parar()
     escrever(1, "VITIMA ENCONTRADA")
     fechar(1)
@@ -310,10 +312,6 @@ tarefa resgatarvitima{
             esperar(300)
         }
         escrever(1, "INDO ATRÁS DA VITIMA")
-        escrevernumero(1, (ULTRA2 * 800 / 100) - 900)
-        frente(300)
-        esperar((ULTRA2 * 700 / 100))
-        parar()
         abrir(1)
         baixar(600)
         zerartemporizador()
