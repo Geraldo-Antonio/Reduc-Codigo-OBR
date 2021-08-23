@@ -280,6 +280,9 @@ tarefa procurarV {
     enquanto(ultra(2)<ULTRA2)farei{frente(300)}
     parar()
     escrever(1, "VITIMA ENCONTRADA")
+    frente(300)
+    esperar(20)
+    parar()
     fechar(1)
     levantar(900)
 }
@@ -340,7 +343,7 @@ tarefa resgatarvitima{
     }
 }
 tarefa resgate{
-    se((arredondar(luz(1))==85 ou arredondar(luz(1))==59) e (arredondar(luz(2))==59 ou arredondar(luz(2))==85))entao{
+    se((arredondar(luz(1))==85 ou arredondar(luz(1))==59) e (arredondar(luz(2))==59 ou arredondar(luz(2))==85) e (arredondar(luz(1))==64 ou arredondar(luz(2))==64))entao{
         parar()
         acenderled("VERDE")
         escrever(1, "RESGATE CONFIRMADO")
