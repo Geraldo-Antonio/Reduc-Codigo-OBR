@@ -12,6 +12,7 @@ numero ULTRA2 = 0
 booleano V2 = falso
 booleano aindanaoachou = verdadeiro
 numero ppos = 0
+numero tipo = 0
 tarefa alinhar {
     #escrevernumero(2, direcao())
 	se(direcao()>230 e direcao()<300)entao{
@@ -198,23 +199,30 @@ tarefa rampa{
 tarefa procurartriangulo {
     se (ultra(1) >= 350) entao{
 		escrever(1, "Tipo 2")
+        tipo = 2
 		enquanto(aindanaoachou) farei{
-			se(luz(3) <= 10) entao{
+			escrevernumero(2, ultra(2))
+			se(ultra(1) <= 135 e anguloatuador() == 0) entao{
+				parar()
+				levantar(1000)
+			}
+			se(luz(3) <= 20) entao{
 				escrever(2, "Posição 1")
                 triangulo = 1
 				aindanaoachou = falso
-			}senao se(arredondar(ultra(2)) > 175 e arredondar(ultra(2)) < 190) entao{
+			}senao se(arredondar(ultra(2)) >= 205 e arredondar(ultra(2)) <= 240) entao{
 				escrevernumero(3, ultra(2))
-				se (ultra(2) > 175) entao{
+				se (ultra(2) >= 205) entao{
 					tras(200)
-					esperar(350)
+					esperar(390)
 					se(ultra(2) > 500) entao{
 							frente(200)
-						esperar(350)
+						esperar(390)
 						escrever(3, "Falso positivo")
 					} senao {
 							frente(200)
 						esperar(350)
+							escrever(2, "Foi")
 						se (ultra(1) < 100) entao{
 								escrever(2, "Posição 2")
                                 triangulo = 2
@@ -232,18 +240,23 @@ tarefa procurartriangulo {
 		}
 	} senao {		
 		escrever(1, "Tipo 1")
+        tipo = 1
 		enquanto(aindanaoachou) farei{
-			se(luz(3) <= 10) entao{
+			se(ultra(1) <= 150 e anguloatuador() == 0) entao{
+				parar()
+				levantar(1000)
+			}
+			se(luz(3) <= 20) entao{
 				escrever(2, "Posição 1")
                 triangulo = 1
 				aindanaoachou = falso
-			}senao se(arredondar(ultra(2)) > 290 e arredondar(ultra(2)) < 305) entao{
-				se (ultra(2) > 290) entao{
+			}senao se(arredondar(ultra(2)) >= 290 e arredondar(ultra(2)) <= 305) entao{
+				se (ultra(2) >= 290) entao{
 					tras(200)
-					esperar(350)
+					esperar(390)
 					se(ultra(2) > 500) entao{
 							frente(200)
-						esperar(350)
+						esperar(390)
 						escrever(3, "Falso positivo")
 					} senao {
 							frente(200)
@@ -266,16 +279,34 @@ tarefa procurartriangulo {
 	}
 }
 tarefa procurarV {
+    se(ultra(2)>500)entao{
+        se(tipo == 1)entao{
+            ULTRA2 = 350
+        } senao se(tipo==2)entao{
+            ULTRA2 = 250
+        }
+    }
     ULTRA2 = ultra(2) - 3
     zerartemporizador()
-    enquanto(ultra(2)>ULTRA2 e ultra(1)>30)farei{
-        escrevernumero(1, ULTRA2)
-        se(ultra(2)>ULTRA2)entao{
-            ULTRA2 = ultra(2) - 1
+    se(triangulo==3)entao{
+        enquanto(ultra(2)>ULTRA2 e ultra(1)>30)farei{
+            escrevernumero(1, ULTRA2)
+            se(ultra(2)>ULTRA2)entao{
+                ULTRA2 = ultra(2) - 1
+            }
+            frente(300) 
         }
-        frente(300)
+    } senao {
+        enquanto(ultra(2)>ULTRA2 e ultra(1)>30)farei{
+            escrevernumero(1, ULTRA2)
+            se(ultra(2)>ULTRA2)entao{
+                ULTRA2 = ultra(2) - 1
+            }
+            tras(300)
+        }
     }
     parar()
+    recuar = temporizador()
     ULTRA2 = ultra(2)
     enquanto(ultra(2)<ULTRA2)farei{frente(300)}
     parar()
@@ -285,6 +316,7 @@ tarefa procurarV {
     parar()
     fechar(1)
     levantar(900)
+    parar()
 }
 tarefa depositar{
     parar()
@@ -334,6 +366,10 @@ tarefa resgatarvitima{
             parar()
             esperar(500)
             # Resgatar a vitima
+            se(triangulo!=3)entao{
+                tras(300)
+                esperar(recuar / 2)
+            }
         } senao {
             fechar(1)
             levantar(600)
@@ -384,9 +420,10 @@ tarefa resgate{
                 ppos = 2
             }
             escrevernumero(4, ppos)
-            procurarV()
-            resgatarvitima()
             se(triangulo==3)entao{
+                acenderled("VERMELHO")
+                procurarV()
+                resgatarvitima()
                 se(temvitima()==verdadeiro)entao{
                     se(ppos == 1) entao{
                         se(ultra(1)>140)entao{
@@ -433,6 +470,18 @@ tarefa resgate{
                     rotacionar(1000, 90)
                     alinhar()
                 }
+            } senao se(triangulo==2)entao{
+                fechar(1)
+                alinhar()
+                procurarV()
+                resgatarvitima()
+                rotacionar(1000, negativo(90))
+                enquanto(ultra(1)>25)farei{frente(300)}
+                parar()
+                rotacionar(1000, 90)
+                enquanto(cor(3)=="PRETO")farei{frente(300)}
+                parar()
+                depositar()
             }
         }
     } senao {
