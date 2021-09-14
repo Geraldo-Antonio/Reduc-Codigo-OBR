@@ -1,6 +1,6 @@
 numero saida = 0
 numero velocidade = 110
-booleano temp = falso
+booleano temp = verdadeiro
 numero tempCont = 0
 numero ULTIMO = 0
 numero triangulo = 0
@@ -11,13 +11,13 @@ numero antigapos = 0
 numero ULTRA2 = 0
 booleano V2 = falso
 booleano aindanaoachou = verdadeiro
-numero ppos = 0
+numero resgatepos = 0
 numero tipo = 0
 numero re = 0
 numero ri = 0
 numero VitimasCont = 0
 numero luz5 = 0
-booleano azul = verdadeiro #Inutil
+booleano azul = falso
 numero veze = 0
 numero alto = 0
 numero bussola = 0
@@ -280,10 +280,6 @@ tarefa seperdeu{
 				}
 				se(tempCont == 0)entao{
                     zerartemporizador()
-                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1500)farei{tras(150)}
-                    parar()
-					tras(150)
-                    esperar(300)
 					tempCont = tempCont + 1
 					parar()
 				}
@@ -330,7 +326,8 @@ tarefa pegar {
 	parar()
 	levantar(500)
 	fechar(1)
-	enquanto(toque(1)==falso)farei{tras(300)}
+	tras(300)
+    esperar(recuar + 1000)
 	parar()
 	frente(300)
 	esperar(150)
@@ -348,22 +345,36 @@ tarefa resgate{
             frente(300)
         }
     }
-    baixar(500)
-    parar()
-    baixar(500)
-    levantar(1000)
+    se(azul == verdadeiro)entao{
+        baixar(500)
+        parar()
+        baixar(500)
+        levantar(1000)
+    }
     alinhar()
     enquanto(verdadeiro)farei{
         alinhar()
         ULTRA2 = ultra(2) - 3
-        enquanto(ultra(2)>ULTRA2 e toque(1)==falso e ultra(1)<254)farei{
-            escrevernumero(1, ULTRA2)
-            se(ultra(2)>ULTRA2)entao{
-                ULTRA2 = ultra(2) - 1
+        se(resgatepos==0)entao{
+            zerartemporizador()
+            enquanto(ultra(2)>ULTRA2 e toque(1)==falso e ultra(1)<254)farei{
+                escrevernumero(1, ULTRA2)
+                se(ultra(2)>ULTRA2)entao{
+                    ULTRA2 = ultra(2) - 1
+                }
+                tras(300) 
             }
-            tras(300) 
+        } senao {
+            enquanto(ultra(2)>ULTRA2 e toque(1)==falso)farei{
+                escrevernumero(1, ULTRA2)
+                se(ultra(2)>ULTRA2)entao{
+                    ULTRA2 = ultra(2) - 1
+                }
+                tras(300) 
+            }
         }
         se(toque(1)==verdadeiro ou ultra(1)>254)entao{
+            resgatepos = 1
             rotacionar(1000, negativo(90))
             tras(300)
             esperar(1000)
@@ -392,8 +403,10 @@ tarefa resgate{
                 ri = multiplicar((re - ultra(1) - 55), negativo(1))
                 escrevernumero(2, ri)
                 esperar(1000)
+                zerartemporizador()
                 enquanto(ultra(1)>ri)farei{frente(300)}
                 parar()
+                recuar = temporizador()
                 frente(300)
                 esperar(250)
                 parar()
@@ -409,6 +422,7 @@ tarefa resgate{
                     esperar(300)
                     parar()
                     pegar()
+                    resgatepos = 0
                     trianguloProc()
                 } senao se(cor(3)=="PRETO")entao{
                     escrever(1, "VITIMA PRETO VOLTANDO")
@@ -427,6 +441,7 @@ tarefa resgate{
                 tras(300)
                 esperar(300)
                 parar()
+                resgatepos = 0
                 pegar()
                 trianguloProc()
             }
@@ -514,6 +529,7 @@ enquanto(verdadeiro)farei{
         fechar(1)
         tras(300)
         esperar(1000)
+        azul = verdadeiro
     } senao {
         resgateIdent()
     }
