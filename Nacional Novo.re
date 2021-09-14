@@ -1,6 +1,6 @@
 numero saida = 0
 numero velocidade = 110
-booleano temp = verdadeiro
+booleano temp = falso
 numero tempCont = 0
 numero ULTIMO = 0
 numero triangulo = 0
@@ -157,27 +157,60 @@ tarefa obstaculo{
 			parar()
 			rotacionar(1000, negativo(20))
 
-			frente(300)
-			esperar(400)
-			zerartemporizador()
-			enquanto(cor(2)=="BRANCO" e (ultra(2)<50) e ultra(1)>20 e ultra(2)>25)farei{frente(100)}
-			parar()
-			rotacionar(1000, 45)
-            frente(300)
-            esperar(400)
-            enquanto(ultra(2)<50)farei{frente(300)}
-            parar()
-            rotacionar(1000, 55)
             zerartemporizador()
-            enquanto(cor(2)=="BRANCO" e temporizador()<300)farei{frente(100)}
+            enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO" e temporizador()<400)farei{frente(300)}
             parar()
-            frente(300)
-            esperar(300)
-            rotacionar(1000, negativo(55))
-            zerartemporizador()
-            enquanto(toque(1)==falso e temporizador()<300)farei{tras(150)}
-            parar()
-		
+            se(cor(1)=="PRETO" ou cor(2)=="PRETO")entao{
+                escrever(1, "OBSTACULO PARA ESQUERDA")
+                frente(300)
+                esperar(300)
+                rotacionar(1000, negativo(45))
+                zerartemporizador()
+                enquanto(toque(1)==falso e temporizador()<300)farei{tras(150)}
+                parar()
+            } senao {
+                zerartemporizador()
+                enquanto(cor(2)=="BRANCO" e (ultra(2)<50) e ultra(1)>20 e ultra(2)>25)farei{frente(100)}
+                parar()
+                rotacionar(1000, 45)
+                frente(300)
+                esperar(400)
+                enquanto(ultra(2)<50)farei{frente(300)}
+                parar()
+                rotacionar(1000, 55)
+                zerartemporizador()
+                enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO" e temporizador()<300)farei{frente(300)}
+                parar()
+                se(cor(1)=="PRETO" ou cor(2)=="PRETO")entao{
+                    escrever(1, "OBSTACULO NORMAL")
+                    frente(300)
+                    esperar(300)
+                    rotacionar(1000, negativo(55))
+                    zerartemporizador()
+                    enquanto(toque(1)==falso e temporizador()<300)farei{tras(150)}
+                    parar()
+                } senao {
+                    zerartemporizador()
+                    enquanto(cor(2)=="BRANCO" e (ultra(2)<50) e ultra(1)>20 e ultra(2)>25)farei{frente(100)}
+                    parar()
+                    rotacionar(1000, 45)
+                    frente(300)
+                    esperar(300)
+                    enquanto(ultra(2)<50)farei{frente(300)}
+                    parar()
+                    rotacionar(1000, 55)
+                    zerartemporizador()
+                    enquanto(cor(2)=="BRANCO" e cor(1)=="BRANCO" e temporizador()<300)farei{frente(100)}
+                    parar()
+                    escrever(1, "OBSTACULO PARA DIREITA")
+                    frente(300)
+                    esperar(400)
+                    rotacionar(1000, negativo(60))
+                    zerartemporizador()
+                    enquanto(toque(1)==falso e temporizador()<300)farei{tras(150)}
+                    parar()
+                }
+            }
 	    }
 	zerartemporizador()
 	} senao{
@@ -270,8 +303,14 @@ tarefa vermelhoF {
     }
 }
 tarefa trianguloProc {
-enquanto(luz(3)>8)farei{frente(300)}
-	parar()
+    enquanto(luz(3)>8)farei{
+        se(ultra(1)<40)entao{
+            rotacionar(1000, 90)
+            alinhar()
+        }
+        frente(300)
+    }
+    parar()
     girarbaixo(1000)
     abrir(1)
     baixar(600)
@@ -285,7 +324,7 @@ tarefa pegar {
 	abrir(1)
 	baixar(1000)
 	parar()
-	enquanto(temvitima()==falso)farei{frente(200)}
+	enquanto(temvitima()==falso e ultra(1)>35)farei{frente(200)}
     frente(300)
 	levantar(500)
 	parar()
@@ -309,19 +348,26 @@ tarefa resgate{
             frente(300)
         }
     }
+    baixar(500)
+    parar()
+    baixar(500)
+    levantar(1000)
+    alinhar()
     enquanto(verdadeiro)farei{
         alinhar()
         ULTRA2 = ultra(2) - 3
-        enquanto(ultra(2)>ULTRA2 e toque(1)==falso)farei{
+        enquanto(ultra(2)>ULTRA2 e toque(1)==falso e ultra(1)<254)farei{
             escrevernumero(1, ULTRA2)
             se(ultra(2)>ULTRA2)entao{
                 ULTRA2 = ultra(2) - 1
             }
             tras(300) 
         }
-        se(toque(1)==verdadeiro)entao{
+        se(toque(1)==verdadeiro ou ultra(1)>254)entao{
             rotacionar(1000, negativo(90))
-            esperar(500)
+            tras(300)
+            esperar(1000)
+            acenderled("VERMELHO")
             parar()
         } senao {
             re = ultra(2)
@@ -409,9 +455,13 @@ tarefa resgateIdent {
         se(alto > baixo) entao{
             escrever(1, "Não é o resgate")
             liberado = falso
+            frente(300)
+            esperar(100)
         } senao se(alto == baixo) entao{
             escrever(1, "Não é o resgate")
             liberado = falso
+            frente(300)
+            esperar(100)
         }senao{
                 escrever(1, "É o resgate")
                 achouresgate = verdadeiro
@@ -448,8 +498,22 @@ velocidadeatuador(150)
 levantar(900)
 zerartemporizador()
 enquanto(verdadeiro)farei{
-    se(cor(3)=="CIANO" ou cor(3)=="AZUL")entao{
-        
+    se((cor(3)=="CIANO" ou cor(3)=="AZUL") e luz(3)<40 e ultra(1)>40)entao{
+        parar()
+        tras(300)
+        esperar(300)
+        parar()
+        abrir(1)
+        baixar(1000)
+        frente(300)
+        esperar(400)
+        parar()
+        frente(300)
+        levantar(600)
+        parar()
+        fechar(1)
+        tras(300)
+        esperar(1000)
     } senao {
         resgateIdent()
     }
