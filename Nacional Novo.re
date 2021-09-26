@@ -18,12 +18,14 @@ numero ri = 0
 numero VitimasCont = 0
 numero luz5 = 0
 booleano azul = falso
-numero veze = 0
-numero alto = 0
 numero bussola = 0
 numero baixo = 0
-booleano liberado = verdadeiro
 booleano achouresgate = falso
+numero T = 241
+numero vezesfrente = 0
+booleano liberadosaida = verdadeiro
+booleano achousaida = falso
+numero tentativa = 0
 
 tarefa alinhar {
     #escrevernumero(2, direcao())
@@ -50,6 +52,15 @@ tarefa alinhar {
 	}
 }
 
+tarefa dash{
+	tras(300)
+	esperar(200)
+	parar()
+	frente(300)
+	esperar(200)
+	parar()
+}
+
 tarefa seguelinha{
     se(luz(1)<50)entao{
         se(luz(2)<50) entao{
@@ -63,16 +74,26 @@ tarefa seguelinha{
                 enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1800)farei{direita(1000)}
                 parar()
                 se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
-                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{esquerda(1000)}
+                    zerartemporizador()
+                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<3600)farei{esquerda(1000)}
                     parar()
+                    se(temporizador()>3600)entao{
+                        direita(1000)
+                        esperar(2000)
+                    }
                 }
             } senao se(ULTIMO == 1)entao{
                 zerartemporizador()
                 enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1800)farei{esquerda(1000)}
                 parar()
                 se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
-                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO")farei{direita(1000)}
+                    zerartemporizador()
+                    enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<3600)farei{direita(1000)}
                     parar()
+                    se(temporizador()>3600)entao{
+                        esquerda(1000)
+                        esperar(2000)
+                    }
                 }
             }
             zerartemporizador()
@@ -93,7 +114,15 @@ tarefa seguelinha{
 }
 
 tarefa verde{
-	se(cor(1)=="VERDE")entao{
+	se(cor(1) == "VERDE" ou cor(2) == "VERDE") entao {
+		parar()
+		frente(100)
+		esperar(30)
+	}
+	se(cor(1) == "VERDE" e cor(2) == "VERDE") entao {
+		parar()
+		rotacionar(1000,180)
+	}senao se(cor(1)=="VERDE" e cor(2) != "VERDE")entao{
 		parar()
         escrever(1, "VERDE PARA A DIREITA")
         enquanto(cor(1)=="VERDE")farei{
@@ -245,7 +274,7 @@ tarefa seperdeu{
     se(temporizador()>1000 e temp==verdadeiro)entao{
 		parar()
 		zerartemporizador()
-		enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1300)farei{
+		enquanto(cor(1)=="BRANCO" e cor(2)=="BRANCO" e temporizador()<1400)farei{
 			se(ULTIMO==1)entao{
 				direita(1000)
 			} senao se (ULTIMO==2)entao{
@@ -257,7 +286,7 @@ tarefa seperdeu{
 		parar()
 		se(cor(1)=="BRANCO" e cor(2)=="BRANCO")entao{
 			zerartemporizador()
-			enquanto(cor(2)=="BRANCO" e temporizador()<2600)farei{
+			enquanto(cor(2)=="BRANCO" e temporizador()<2800)farei{
 				se(ULTIMO==1)entao{
 					esquerda(1000)
 				} senao se (ULTIMO==2)entao{
@@ -270,13 +299,13 @@ tarefa seperdeu{
 			se(cor(2)=="BRANCO")entao{
 				se(ULTIMO==1)entao{
 					direita(1000)
-					esperar(1300)
+					esperar(1400)
 				} senao se (ULTIMO==2)entao{
 					esquerda(1000)
-					esperar(1300)
+					esperar(1400)
 				} senao {
 					direita(1000)
-					esperar(1300)
+					esperar(1400)
 				}
 				se(tempCont == 0)entao{
                     zerartemporizador()
@@ -326,8 +355,7 @@ tarefa pegar {
 	parar()
 	levantar(500)
 	fechar(1)
-	tras(300)
-    esperar(recuar + 1000)
+	enquanto(toque(1)==falso)farei{tras(300)}
 	parar()
 	frente(300)
 	esperar(150)
@@ -337,45 +365,130 @@ tarefa pegar {
 tarefa resgate{
     alinhar()
     #cuboazul()
+    triangulo = triangulo + 1
+    escrevernumero(1, triangulo)
     enquanto(luz(3)>8)farei{
-        se(ultra(1)<30)entao{
-            rotacionar(1000, 90)
+        se(ultra(1)<30 ou cor(1) == "VERDE")entao{
+            triangulo = triangulo + 1
+            escrever(1, "O VALOR DO TRIANGULO É:")
+            escrevernumero(2, triangulo)
+			se(ultra(2) > 60) entao{
+            	rotacionar(1000, 90)
+			} senao{
+            	rotacionar(1000, negativo(90))
+			}
             alinhar()
         } senao {
             frente(300)
         }
     }
-    se(azul == verdadeiro)entao{
-        baixar(500)
+    #Ajuste
+    tras(300)
+    esperar(200)
+    se(ultra(2)<50)entao{
+        rotacionar(1000, negativo(45))
+        frente(300)
+        esperar(600)
+        rotacionar(1000, 90)
+        #############################
+        girarbaixo(1000)
         parar()
-        baixar(500)
-        levantar(1000)
+        abrir(1)
+        baixar(600)
+        esperar(1000)
+        se(temKit() == verdadeiro) entao{
+            dash()
+        }
+        fechar(1)
+        levantar(600)
+        parar()
+        girarcima(1000)
+        ##############################
+        rotacionar(1000, 90)
+        tras(300)
+        esperar(600)
+        rotacionar(1000, negativo(45))
+    } senao{
+        rotacionar(1000, 45)
+        frente(300)
+        esperar(600)
+        rotacionar(1000, negativo(90))
+        #############################
+        girarbaixo(1000)
+        parar()
+        abrir(1)
+        baixar(600)
+        esperar(1000)
+        se(temKit() == verdadeiro) entao{
+            dash()
+        }
+        fechar(1)
+        levantar(600)
+        parar()
+        girarcima(1000)
+        ##############################
+        rotacionar(1000, 90)
+        tras(300)
+        esperar(600)
+        rotacionar(1000, negativo(45))
     }
     alinhar()
-    enquanto(verdadeiro)farei{
+    se(tipo==1)entao{
+        se(triangulo==1)entao{
+            escrever(1, "Tipo de arena e valor do T")
+            escrevernumero(2, tipo)
+            escrevernumero(3, T)
+            T = 350
+        } senao se(triangulo==2)entao{
+            escrever(1, "Tipo de arena e valor do T")
+            escrevernumero(2, tipo)
+            escrevernumero(3, T)
+            T = 241
+        } senao se(triangulo==3)entao{
+            escrever(1, "Tipo de arena e valor do T")
+            escrevernumero(2, tipo)
+            escrevernumero(3, T)
+            T = 350
+        }
+    } senao se(tipo==2)entao{
+        se(triangulo==1)entao{
+            escrever(1, "Tipo de arena e valor do T")
+            escrevernumero(2, tipo)
+            escrevernumero(3, T)
+            T = 241
+        } senao se(triangulo==2)entao{
+            escrever(1, "Tipo de arena e valor do T")
+            escrevernumero(2, tipo)
+            escrevernumero(3, T)
+            T = 350
+        } senao se(triangulo==3)entao{
+            T = 241
+            escrever(1, "Tipo de arena e valor do T")
+            escrevernumero(2, tipo)
+            escrevernumero(3, T)
+        }
+    }
+    enquanto(VitimasCont < 3)farei{
+        escrevernumero(3, T)
         alinhar()
         ULTRA2 = ultra(2) - 3
-        se(resgatepos==0)entao{
-            zerartemporizador()
-            enquanto(ultra(2)>ULTRA2 e toque(1)==falso e ultra(1)<254)farei{
-                escrevernumero(1, ULTRA2)
-                se(ultra(2)>ULTRA2)entao{
-                    ULTRA2 = ultra(2) - 1
-                }
-                tras(300) 
+        zerartemporizador()
+        enquanto(ultra(2)>ULTRA2 e toque(1)==falso e ultra(1)<T)farei{
+            escrevernumero(1, ULTRA2)
+            se(ultra(2)>ULTRA2)entao{
+                ULTRA2 = ultra(2) - 1
             }
-        } senao {
-            enquanto(ultra(2)>ULTRA2 e toque(1)==falso)farei{
-                escrevernumero(1, ULTRA2)
-                se(ultra(2)>ULTRA2)entao{
-                    ULTRA2 = ultra(2) - 1
-                }
-                tras(300) 
-            }
+            tras(300) 
         }
-        se(toque(1)==verdadeiro ou ultra(1)>254)entao{
+        se(toque(1)==verdadeiro ou ultra(1)>T)entao{
+            se(T == 350)entao{
+                T = 241
+            } senao {
+                T = 350
+            }
             resgatepos = 1
             rotacionar(1000, negativo(90))
+            alinhar()
             tras(300)
             esperar(1000)
             acenderled("VERMELHO")
@@ -392,29 +505,30 @@ tarefa resgate{
                 escrever(1, "PAREDE NÂO ENCONTRADA")
                 abrir(1)
                 baixar(1000)
-                enquanto(temvitima()==falso)farei{frente(300)}
                 parar()
-                tras(300)
-                esperar(100)
+                enquanto(temvitima()==falso e ultra(1)>35)farei{frente(200)}
+                frente(300)
+                levantar(500)
                 parar()
-                levantar(1000)
+                levantar(500)
+                fechar(1)
             } senao {
                 escrever(1, "POSIÇÃO DA VITIMA EM RELAÇÂO A PAREDE ENCONTRADA")
-                ri = multiplicar((re - ultra(1) - 55), negativo(1))
+                ri = multiplicar((re - ultra(1) - 42), negativo(1))
                 escrevernumero(2, ri)
                 esperar(1000)
                 zerartemporizador()
-                enquanto(ultra(1)>ri)farei{frente(300)}
+                enquanto(ultra(1)>ri)farei{frente(200)}
                 parar()
                 recuar = temporizador()
-                frente(300)
+                frente(100)
                 esperar(250)
                 parar()
             }
             se(VitimasCont < 2)entao{
                 parar()
                 esperar(500)
-                se(cor(3)=="BRANCO")entao{
+                se(cor(3)=="BRANCO" e temperatura()>35)entao{
                     escrever(1, "VITIMA BRANCA")
                     VitimasCont = VitimasCont + 1
                     escrevernumero(2, VitimasCont)
@@ -424,7 +538,7 @@ tarefa resgate{
                     pegar()
                     resgatepos = 0
                     trianguloProc()
-                } senao se(cor(3)=="PRETO")entao{
+                } senao {
                     escrever(1, "VITIMA PRETO VOLTANDO")
                     escrevernumero(2, VitimasCont)
                     enquanto(toque(1)==falso)farei{tras(300)}
@@ -438,72 +552,98 @@ tarefa resgate{
                 }
             } senao {
                 escrever(1, "VITIMA PRETA, PERMITIDO RESGATAR")
+                VitimasCont = 3
                 tras(300)
                 esperar(300)
                 parar()
                 resgatepos = 0
                 pegar()
                 trianguloProc()
+                se(T == 350)entao{
+                    T = 241
+                } senao {
+                    T = 350
+                }
             }
         }
     }
-}
-tarefa resgateIdent {
-    se(ultra(2) <= 50 e liberado == verdadeiro e achouresgate == falso) entao{
-        parar()
-        bussola = truncar(direcao())
-        enquanto(veze < 10) farei{
-            esquerda(1000)
-            esperar(100)
-            se(ultra(1) > 1000) entao{
-                alto =  alto + 1
-            } senao se(ultra(2) > 50) entao{
-                baixo = baixo + 1
-            }
-            se(alto >= 5) entao{
-                parar()
-                interromper()
-            }
-            veze = veze + 1
-        }
-        veze = 0
-        se(alto > baixo) entao{
-            escrever(1, "Não é o resgate")
-            liberado = falso
-            frente(300)
-            esperar(100)
-        } senao se(alto == baixo) entao{
-            escrever(1, "Não é o resgate")
-            liberado = falso
-            frente(300)
-            esperar(100)
-        }senao{
-                escrever(1, "É o resgate")
-                achouresgate = verdadeiro
-                enquanto(truncar(direcao()) != bussola) farei{
-                    se(truncar(direcao()) < bussola) entao{
-                        direita(1000)
-                    } senao {
-                        parar()
-                        interromper()
+    escrever(1, "TODAS AS VITIMAS RESGATADAS")
+    enquanto(achousaida == falso) farei {
+		se(tentativa != 0) entao{
+			esquerda(1000)
+		} senao{
+			direita(1000)
+		}
+		se(ultra(1) > 450 e liberadosaida == verdadeiro) entao{
+			se(tentativa != 0) entao{
+				esquerda(400)
+			} senao{
+				direita(400)
+			}
+			esperar(300)
+			parar()
+			enquanto(verdadeiro) farei{
+				frente(200)
+				vezesfrente = vezesfrente + 1
+				se(ultra(2) < 35 ou ultra(1) < 35 ou cor(1) == "VERMELHO" ou cor(2) == "VERMELHO" ou cor(1) == "PRETO" ou cor(2) == "PRETO" ou truncar(corvermelha(2)) == 44 e truncar(corverde(2)) == 47 e truncar(corazul(2)) == 54 ou truncar(corvermelha(1)) == 44 e truncar(corverde(1)) == 47 e truncar(corazul(1)) == 54) entao{
+					liberadosaida = falso
+					interromper()
+				}
+				se(truncar(corvermelha(1)) == 24 e truncar(corverde(1)) == 67 e truncar(corazul(2)) == 37 ou cor(1) == "CIANO" ou cor(2) == "CIANO" ou cor(1) == "VERDE" e cor(2) == "VERDE") entao{
+					escrever(1, "Achamos")
+                    frente(300)
+                    esperar(200)
+					achousaida = verdadeiro
+                    enquanto(cor(1)!="PRETO" e cor(2)!="PRETO")farei{esquerda(1000)}
+                    parar()
+                    enquanto(cor(1)!="VERMELHO" ou cor(2)!="VERMELHO")farei{
+                        seperdeu()
                     }
-                }
-                resgate()
-        }
-        enquanto(truncar(direcao()) != bussola) farei{
-            se(truncar(direcao()) < bussola) entao{
-                direita(1000)
-            } senao {
-                parar()
-                interromper()
-            }
-        }
-        parar()
-        alto = 0
-        veze = 0
-        baixo = 0
-    } senao se(ultra(2) > 1000 e liberado == falso e achouresgate == falso) entao{
-        liberado = verdadeiro
+                    parar()
+                    frente(300)
+                    esperar(300)
+                    parar()
+                    esperar(10000)
+                    parar()
+					interromper()
+				}
+			}
+			se(achousaida == falso) entao{
+				liberadosaida = falso
+				enquanto(vezesfrente >= 0) farei{
+					tras(300)
+					escrevernumero(1, vezesfrente)
+					vezesfrente = vezesfrente - 3
+				}
+				tentativa = tentativa + 1
+			}
+		} senao se(ultra(1) < 450 e liberadosaida == falso) entao{
+			se(truncar(ultra(1)) < 450) entao{
+				liberadosaida = verdadeiro
+			}
+		}
+	}
+}
+
+
+tarefa resgateIdent {
+    se(achouresgate == falso e truncar(corvermelha(2)) == 44 e truncar(corverde(2)) == 47 e truncar(corazul(2)) == 54 ou achouresgate == falso e truncar(corvermelha(1)) == 44 e truncar(corverde(1)) == 47 e truncar(corazul(1)) == 54 ou truncar(corvermelha(2)) == 60 e truncar(corverde(2)) == 65 e truncar(corazul(2)) == 74 ou truncar(corvermelha(1)) == 60 e truncar(corverde(1)) == 65 e truncar(corazul(1)) == 74) entao{
+        escrever(3, "É o resgate")
+		frente(300)
+		esperar(500)
+		parar()
+        achouresgate = verdadeiro
+		se(truncar(ultra(1)) >= 350 e truncar(ultra(1)) < 1000 ou truncar(ultra(2)) <= 230) entao{
+			escrever(2, "Tipo 1")
+            tipo = 1
+		} senao {
+			escrever(2, "Tipo 2")
+            tipo = 2
+		}
+		tras(300)
+		esperar(500)
+		parar()
+        resgate()
     } senao { #Inútil
         vermelhoF() #Inútil
     } #Inútil
