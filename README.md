@@ -19,7 +19,3 @@ Temporização: O código faz uso de temporizadores para controlar o tempo decor
 Personalização:
 
 Para utilizar este código em um projeto específico, você pode precisar adaptá-lo ao hardware e ao ambiente do seu robô. Certifique-se de revisar e ajustar os parâmetros e as lógicas de controle conforme necessário.
-
-Observação:
-
-Este é apenas um resumo geral do código. Para uma compreensão completa, é essencial analisar cada parte do código e considerar o contexto do seu projeto. Certifique-se de incluir informações adicionais, como detalhes sobre o hardware e as instruções de uso, em seu repositório no GitHub.
